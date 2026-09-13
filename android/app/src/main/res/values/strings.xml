@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Тропой контрабандиста</string>
+    <string name="title_activity_main">Тропой контрабандиста</string>
+    <string name="package_name">com.smuggler.tropoj</string>
+    <string name="custom_url_scheme">com.smuggler.tropoj</string>
+</resources>

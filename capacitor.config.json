@@ -1,0 +1,11 @@
+{
+  "appId": "com.smuggler.tropoj",
+  "appName": "Тропой контрабандиста",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "backgroundColor": "#0d1108",
+  "android": {
+    "backgroundColor": "#0d1108",
+    "allowMixedContent": false
+  }
+}
