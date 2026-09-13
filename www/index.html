@@ -59,8 +59,9 @@ button{font-family:inherit;}
 .enter{animation:slideUp .28s ease both;}
 
 /* ===== phone shell ===== */
+html,body{height:100%;overflow:hidden;}
 #phone{
-  max-width:452px;margin:0 auto;min-height:100vh;position:relative;
+  max-width:452px;margin:0 auto;height:100vh;height:100dvh;position:relative;
   background:
     radial-gradient(ellipse 500px 320px at 50% 0%, var(--lamp-soft), transparent 60%),
     var(--bg);
@@ -69,7 +70,7 @@ button{font-family:inherit;}
 @media (min-width:480px){
   body{display:flex;justify-content:center;padding:28px 12px;}
   #phone{
-    min-height:844px;max-height:900px;border-radius:40px;
+    height:844px;max-height:900px;border-radius:40px;
     box-shadow:0 40px 80px -24px rgba(0,0,0,.75),0 0 0 8px #000;
     border:2px solid #1b1e14;
   }
@@ -80,9 +81,7 @@ button{font-family:inherit;}
 .appbar-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
 .brand{display:flex;align-items:center;gap:8px;min-width:0;}
 .brand-mark{width:8px;height:8px;border-radius:50%;background:var(--lamp);box-shadow:0 0 0 4px var(--lamp-soft);flex:0 0 auto;}
-.brand-text{min-width:0;display:flex;flex-direction:column;}
 .brand-name{font-size:14.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.brand-text small{font-size:10.5px;color:var(--ink-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;}
 .icon-btn{
   width:34px;height:34px;border-radius:50%;border:none;background:var(--surface-2);color:var(--ink-dim);
   display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;transition:background .15s,color .15s;
@@ -90,9 +89,6 @@ button{font-family:inherit;}
 .icon-btn:active{transform:scale(.92);}
 .icon-btn:disabled{opacity:.32;cursor:not-allowed;}
 .icon-btn svg{width:16px;height:16px;}
-@keyframes spin-slow{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
-.icon-btn.playing{color:var(--lamp);}
-.icon-btn.playing svg{animation:spin-slow 3.4s linear infinite;}
 
 .progress-strip{display:flex;gap:4px;margin-bottom:8px;}
 .progress-seg{flex:1;height:5px;border-radius:3px;background:var(--surface-3);position:relative;overflow:hidden;}
@@ -242,6 +238,14 @@ button{font-family:inherit;}
 }
 .sheet-handle{width:36px;height:4px;border-radius:2px;background:var(--line);margin:4px auto 14px;}
 .sheet-title{font-size:14px;font-weight:700;margin-bottom:12px;text-align:center;}
+.sheet-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px;}
+.sheet-title-row .sheet-title{margin-bottom:0;flex:1;}
+.sheet-close-btn{
+  width:30px;height:30px;border-radius:50%;border:none;background:var(--surface-2);color:var(--ink-dim);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;flex:0 0 auto;
+}
+.sheet-close-btn:active{transform:scale(.92);}
+.sheet-close-btn svg{width:15px;height:15px;}
 .sheet-btn-row{display:flex;gap:10px;margin-bottom:10px;}
 .sheet-btn{
   flex:1;padding:15px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface-2);color:var(--ink);
@@ -349,8 +353,8 @@ const SLOT_META={
   counter:{name:"Хладнокровие",desc:"±1 к одному кубику",icon:'pm',color:'--counter'},
   magic:{name:"Чутьё",desc:"Перебросить один кубик",icon:'moon',color:'--magic'},
   con:{name:"Выносливость",desc:"Перебросить сколько угодно кубиков",icon:'heart',color:'--con'},
-  xp:{name:"Опыт",desc:"+1 круг за каждую единицу на костях. Заполненный ряд — заряд способности",icon:'star',color:'--xp'},
-  bonfire:{name:"Схрон",desc:"Кубик отсюда сработает у костра (рубеж 5): спишет столько же Опыта и добавит +1 к Выносливости",icon:'bag',color:'--lamp'},
+  xp:{name:"Опыт",desc:"Заполняется каждый раз, когда выпадает 1 — на рубежах и на стоянке у костра. Ряд закрыт — заряд способности (кроме Выносливости), до предела в 7",icon:'star',color:'--xp'},
+  bonfire:{name:"Схрон",desc:"В зоне 5 нет боя: +1 заряд Выносливости и списание Опыта по значению кости, отложенной сюда при подготовке",icon:'bag',color:'--lamp'},
 };
 const RANKS=[[11,"Любимец Большой Медведицы"],[14,"Гроза заставы"],[19,"Бывалый контрабандист"],[Infinity,"Меченый — но живой"]];
 
@@ -359,8 +363,8 @@ const RULES=[
  {title:"Подготовка",body:"Бросьте все 6 костей (до 5 перебросов). Раздайте кости по одной на: Твёрдая рука, Хладнокровие, Чутьё, Выносливость, Опыт (сразу зачёркиваете кружки), Схрон (пригодится у костра).",note:"Чем больше выпало — тем больше зарядов."},
  {title:"Каждый рубеж",body:"Бросайте все 6 костей заново. За каждую единицу — кружок Опыта. Одни значения должны просто присутствовать, значок «×N» — N одинаковых любых."},
  {title:"Способности",list:["Твёрдая рука — переворот кости (1↔6, 2↔5, 3↔4)","Хладнокровие — ±1 к кости","Чутьё — переброс одной кости","Выносливость — переброс любого числа костей разом"],note:"Каждое применение — один заряд (максимум 7)."},
- {title:"Опыт",body:"13 кружков в 3 рядах. Завершённый ряд даёт заряд любой способности (кроме Выносливости), до предела 7."},
- {title:"Стоянка",body:"В зоне 5 нет боя: +1 Выносливость и списание Опыта по значению Схрона."},
+ {title:"Опыт",body:"Каждый раз, когда выпадает 1, заполняется кружок Опыта — на рубежах и на стоянке у костра. Завершение целого ряда даёт один дополнительный заряд любой способности на выбор (кроме Выносливости), до предела в 7."},
+ {title:"Стоянка",body:"В зоне 5 нет боя. Вместо этого вы получаете один дополнительный заряд Выносливости и зачёркиваете столько кружков Опыта, сколько составляет значение кости, отложенной в Схрон при подготовке."},
  {title:"Победа и поражение",body:"Победа — за зоной 8. Поражение — заряды кончились, а требование не выполнено."},
  {title:"Итоговый счёт",body:"Сумма всех использованных зарядов — чем меньше, тем лучше.",note:"≤11 — Любимец Медведицы · 12–14 — Гроза заставы · 15–19 — Бывалый · 20+ — Меченый, но живой"},
 ];
@@ -391,37 +395,6 @@ function freshState(){
   };
 }
 let S=freshState();
-
-/* ---------- background music (YouTube embed) ---------- */
-/* Народны альбом — «Кантрабандыст» */
-const YT_VIDEO_ID='-vu-d7maJSo';
-const YT_LIST_ID='PLF352C50E73CE405C';
-let ytPlayer=null, musicPlaying=false, musicReady=false;
-(function initYouTubePlayer(){
-  const holder=document.createElement('div');
-  holder.style.cssText='position:fixed;left:-9999px;top:-9999px;width:2px;height:2px;overflow:hidden;';
-  const target=document.createElement('div'); target.id='yt-bgm-target';
-  holder.appendChild(target);
-  document.body.appendChild(holder);
-  const tag=document.createElement('script');
-  tag.src='https://www.youtube.com/iframe_api';
-  document.body.appendChild(tag);
-  window.onYouTubeIframeAPIReady=function(){
-    ytPlayer=new YT.Player('yt-bgm-target',{
-      height:'2',width:'2',
-      videoId:YT_VIDEO_ID,
-      playerVars:{list:YT_LIST_ID,listType:'playlist',autoplay:0,controls:0},
-      events:{
-        onReady:function(){ musicReady=true; try{ytPlayer.setVolume(55);}catch(e){} render(); },
-        onStateChange:function(e){ musicPlaying=(e.data===YT.PlayerState.PLAYING); render(); },
-      },
-    });
-  };
-})();
-function toggleMusic(){
-  if(!ytPlayer||!musicReady){ return; }
-  if(musicPlaying){ ytPlayer.pauseVideo(); } else { ytPlayer.playVideo(); }
-}
 function rollDie(){return 1+Math.floor(Math.random()*6);}
 function rollN(n){return Array.from({length:n},rollDie);}
 function rowRanges(){return [[0,5],[5,10],[10,13]];}
@@ -562,8 +535,6 @@ const ICONS={
   check:'<path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
   reroll:'<path d="M20 11A8 8 0 1 0 18.5 15.5" stroke="currentColor" stroke-width="1.9" fill="none" stroke-linecap="round"/><path d="M20 5v6h-6" stroke="currentColor" stroke-width="1.9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
   book:'<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15.5A2.5 2.5 0 0 0 17.5 21H4V5.5Z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/>',
-  music:'<path d="M9 18V5l10-2v12" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="18" r="2.3" stroke="currentColor" stroke-width="1.7" fill="none"/><circle cx="17" cy="15" r="2.3" stroke="currentColor" stroke-width="1.7" fill="none"/>',
-  pause:'<rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"/><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"/>',
   info:'<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" fill="none"/><path d="M12 11v5.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="12" cy="7.7" r="1.15" fill="currentColor"/>',
   gate:'<path d="M4 21V6M20 21V6M4 9h16M4 15h16M12 6v15M8 9l4-3 4 3" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
   window:'<rect x="5" y="4" width="14" height="16" rx="1.2" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M12 4v16M5 12h14" stroke="currentColor" stroke-width="1.6"/>',
@@ -573,6 +544,7 @@ const ICONS={
   sunrise:'<path d="M5 18h14M12 6v3M6.5 12l1.8 1.8M17.5 12l-1.8 1.8M3 12h2M19 12h2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M7 18a5 5 0 0 1 10 0" stroke="currentColor" stroke-width="1.7" fill="none"/>',
   path:'<path d="M5 20c3-4 3-8 0-12M19 20c-3-4-3-8 0-12M12 4v16" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-dasharray="1 4"/><circle cx="12" cy="4" r="2" fill="currentColor"/><circle cx="12" cy="20" r="2" fill="currentColor"/>',
   list:'<path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+  close:'<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/>',
 };
 function svgIcon(name,color){
   const wrap=document.createElement('span'); wrap.style.display='flex';
@@ -650,13 +622,9 @@ function attachDieDrag(dieWrapEl,i){
 /* ===== app bar ===== */
 function appBar(){
   const bar=el('div',{class:'appbar'});
-  const playing=musicPlaying;
   const row=el('div',{class:'appbar-row'},[
-    el('div',{class:'brand'},[el('span',{class:'brand-mark'}),el('div',{class:'brand-text'},[el('span',{class:'brand-name'},'Тропой контрабандиста'),el('small',{},playing?'▶ Народны альбом — «Кантрабандыст»':'Пограничье, Раков 192_')])]),
-    el('div',{style:'display:flex;gap:6px;'},[
-      el('button',{class:'icon-btn'+(playing?' playing':''),disabled:!musicReady,onclick:toggleMusic,title:'Народны альбом — «Кантрабандыст»',html:`<svg viewBox="0 0 24 24">${ICONS.music}</svg>`}),
-      el('button',{class:'icon-btn',onclick:openRules,html:`<svg viewBox="0 0 24 24">${ICONS.info}</svg>`}),
-    ]),
+    el('div',{class:'brand'},[el('span',{class:'brand-mark'}),el('span',{class:'brand-name'},'Тропой контрабандиста')]),
+    el('button',{class:'icon-btn',onclick:openRules,html:`<svg viewBox="0 0 24 24">${ICONS.info}</svg>`}),
   ]);
   bar.appendChild(row);
   if(['playing','bonfire','award'].includes(S.phase)){
@@ -782,13 +750,13 @@ function sheetTabContent(){
     el('div',{class:'res-num',style:'color:var(--lamp);'},String(S.bonfireCharges)),
   ]));
   bfCard.appendChild(el('div',{class:'res-desc'},S.bonfireVisited
-    ? 'Уже использован: у костра на рубеже 5 списал столько же Опыта и дал +1 к Выносливости.'
-    : `Отложен во время подготовки. У костра на рубеже 5 автоматически спишет ${S.bonfireCharges} круг(а/ов) Опыта и добавит +1 заряд Выносливости.`));
+    ? 'В зоне 5 боя не было: вы получили +1 заряд Выносливости и зачеркнули столько кружков Опыта, сколько составляло значение этой кости.'
+    : `В зоне 5 боя не будет: вы получите +1 заряд Выносливости и зачеркнёте ${S.bonfireCharges} круг(а/ов) Опыта — по значению кости, отложенной сюда при подготовке.`));
   wrap.appendChild(bfCard);
 
   const xpCard=el('div',{class:'xp-card'});
   xpCard.appendChild(el('div',{class:'xp-title'},'Опыт'));
-  xpCard.appendChild(el('div',{class:'xp-desc'},'За каждую единицу, выпавшую на костях, закрашивается один круг. Как только закрашен весь ряд — получаете один заряд любой способности на выбор (кроме Выносливости), максимум до 7.'));
+  xpCard.appendChild(el('div',{class:'xp-desc'},'Каждый раз, когда выпадает 1, заполняется кружок Опыта — на рубежах и на стоянке у костра. Завершение целого ряда даёт один дополнительный заряд любой способности на выбор (кроме Выносливости), до предела в 7.'));
   const romans=['I','II','III'];
   rowRanges().forEach((r,ri)=>{
     const row=el('div',{class:'xp-row'});
@@ -1008,7 +976,10 @@ function rulesSheet(){
   const backdrop=el('div',{class:'sheet-backdrop',onclick:(e)=>{ if(e.target===backdrop) closeRules(); }});
   const sheet=el('div',{class:'action-sheet',style:'max-height:78vh;overflow-y:auto;text-align:left;'});
   sheet.appendChild(el('div',{class:'sheet-handle'}));
-  sheet.appendChild(el('div',{class:'sheet-title',style:'text-align:left;font-size:17px;'},'Правила пути'));
+  sheet.appendChild(el('div',{class:'sheet-title-row'},[
+    el('div',{class:'sheet-title',style:'text-align:left;font-size:17px;'},'Правила пути'),
+    el('button',{class:'sheet-close-btn',onclick:closeRules,'aria-label':'Закрыть'},[svgIcon('close')]),
+  ]));
   RULES.forEach(sec=>{
     const s=el('div',{class:'rules-section'});
     s.appendChild(el('h3',{},sec.title));
