@@ -2,6 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="google" content="notranslate">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0">
 <title>Тропой контрабандиста</title>
 <link href="assets/fonts/fonts.css" rel="stylesheet">
@@ -77,7 +78,7 @@ html,body{height:100%;overflow:hidden;}
 }
 
 /* ===== app bar ===== */
-.appbar{padding:calc(10px + var(--safe-t)) 16px 8px;flex:0 0 auto;}
+.appbar{padding:calc(10px + var(--safe-t)) 16px 8px;flex:0 0 auto;position:relative;z-index:1;}
 .appbar-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
 .brand{display:flex;align-items:center;gap:8px;min-width:0;}
 .brand-mark{width:8px;height:8px;border-radius:50%;background:var(--lamp);box-shadow:0 0 0 4px var(--lamp-soft);flex:0 0 auto;}
@@ -100,7 +101,7 @@ html,body{height:100%;overflow:hidden;}
 .progress-caption svg{width:14px;height:14px;color:var(--lamp);}
 
 /* ===== tabs ===== */
-.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 16px 12px;}
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 16px 12px;position:relative;z-index:1;}
 .content.no-actionzone{padding-bottom:24px;}
 
 /* ===== zone card ===== */
@@ -156,7 +157,7 @@ html,body{height:100%;overflow:hidden;}
 /* ===== fixed action zone (above tab bar) ===== */
 .actionzone{
   flex:0 0 auto;padding:10px 16px 12px;background:linear-gradient(180deg,transparent,var(--bg) 30%);
-  border-top:1px solid var(--line-soft);
+  border-top:1px solid var(--line-soft);position:relative;z-index:1;
 }
 .ability-strip{display:flex;justify-content:center;gap:10px;margin-bottom:10px;}
 .ab-badge{
@@ -195,7 +196,7 @@ html,body{height:100%;overflow:hidden;}
 /* ===== tab bar ===== */
 .tabbar{
   flex:0 0 auto;display:flex;border-top:1px solid var(--line-soft);background:var(--surface);
-  padding:6px 8px calc(6px + var(--safe-b));
+  padding:6px 8px calc(6px + var(--safe-b));position:relative;z-index:1;
 }
 .tab-btn{
   flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;border:none;background:none;
@@ -236,7 +237,6 @@ html,body{height:100%;overflow:hidden;}
   width:100%;max-width:452px;background:var(--surface);border-radius:22px 22px 0 0;padding:10px 18px calc(20px + var(--safe-b));
   box-shadow:0 -16px 40px rgba(0,0,0,.5);animation:slideUp .22s ease;
 }
-.sheet-handle{width:36px;height:4px;border-radius:2px;background:var(--line);margin:4px auto 14px;}
 .sheet-title{font-size:14px;font-weight:700;margin-bottom:12px;text-align:center;}
 .sheet-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px;}
 .sheet-title-row .sheet-title{margin-bottom:0;flex:1;}
@@ -259,9 +259,15 @@ html,body{height:100%;overflow:hidden;}
 .sheet-dice .die{width:44px;height:44px;}
 
 /* ===== onboarding / setup / end (full screen, no tabbar) ===== */
-.full-screen{flex:1;min-height:0;display:flex;flex-direction:column;}
-.screen-scroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 20px 12px;}
-.screen-footer{flex:0 0 auto;padding:10px 20px calc(14px + var(--safe-b));background:linear-gradient(180deg,transparent,var(--bg) 35%);border-top:1px solid var(--line-soft);}
+.full-screen{flex:1;min-height:0;display:flex;flex-direction:column;position:relative;}
+.screen-scroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 20px 12px;position:relative;z-index:1;}
+.screen-footer{flex:0 0 auto;padding:10px 20px calc(14px + var(--safe-b));background:linear-gradient(180deg,transparent,var(--bg) 35%);border-top:1px solid var(--line-soft);position:relative;z-index:1;}
+
+/* ===== animated starfield (every screen, behind #phone content) ===== */
+.starfield{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;}
+.starfield .star{position:absolute;border-radius:50%;background:var(--ink);box-shadow:0 0 4px 1px rgba(242,234,214,.35);animation-name:star-twinkle;animation-timing-function:ease-in-out;animation-iteration-count:infinite;}
+@keyframes star-twinkle{0%,100%{opacity:.12;}50%{opacity:1;}}
+.starfield .star.fixed{animation:none;opacity:.85;}
 .eyebrow{font-size:11px;color:var(--ink-faint);letter-spacing:.05em;font-weight:700;text-transform:uppercase;margin-bottom:8px;}
 .h-title{font-size:25px;font-weight:800;text-transform:uppercase;line-height:1.1;margin-bottom:12px;}
 .p-body{font-size:14px;color:var(--ink-dim);line-height:1.6;margin:0 0 16px;}
@@ -320,78 +326,393 @@ html,body{height:100%;overflow:hidden;}
 .rules-section h3{font-size:11px;text-transform:uppercase;color:var(--lamp);letter-spacing:.04em;margin-bottom:5px;font-weight:800;}
 .rules-section p{font-size:12.5px;color:var(--ink-dim);line-height:1.5;margin:0 0 5px;white-space:pre-line;}
 .rules-section ul{margin:5px 0;padding-left:16px;font-size:12px;color:var(--ink-dim);}
+
+/* ===== language screen ===== */
+.lang-screen-title{font-size:11px;color:var(--ink-faint);letter-spacing:.05em;font-weight:700;text-transform:uppercase;margin-bottom:8px;text-align:center;}
+.lang-screen-list{display:flex;flex-direction:column;gap:12px;margin-top:22px;}
+.lang-btn{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;border-radius:16px;
+  border:1.5px solid var(--line);background:var(--surface-2);color:var(--ink);cursor:pointer;text-align:left;
+}
+.lang-btn:active{transform:scale(.98);}
+.lang-btn svg{width:18px;height:18px;color:var(--ink-faint);flex:0 0 auto;}
+.lang-btn-inner{display:flex;flex-direction:column;align-items:flex-start;gap:3px;min-width:0;}
+.lang-native{font-family:var(--font-display);font-size:19px;font-weight:700;letter-spacing:.02em;}
+.lang-sub{font-size:11px;color:var(--ink-faint);}
 </style>
 </head>
 <body>
-<div id="phone"></div>
+<div id="phone" translate="no" class="notranslate"></div>
 <script>
 const OPPOSITE_FACE={1:6,2:5,3:4,4:3,5:2,6:1};
 const MAX_REROLLS=5;
 const SLOT_KEYS=['crit','counter','magic','con','xp','bonfire'];
 
-const ZONES=[
- {id:1,name:"Выход",enemy:"Скрипучая калитка",fixed:[4,5],groups:[3],glyph:'gate',
-  flavor:"Ещё видны тёплые окна крайних домов посёлка. Луна ещё не взошла — время выходить, пока темнота на твоей стороне."},
- {id:2,name:"Местечко",enemy:"Последние окна",fixed:[2,3,4],groups:[2],glyph:'window',
-  flavor:"Улочки ещё не совсем позади. Небо на востоке уже сереет — задерживаться нельзя."},
- {id:3,name:"Под кронами",enemy:"Первый лай вдалеке",fixed:[3,4,5],groups:[3],glyph:'tree',
-  flavor:"Под тенью деревьев спокойнее. Но где-то сзади забрехала собака — кто-то заметил лишние следы."},
- {id:4,name:"Слепая тропа",enemy:"Шаги в темноте",fixed:[],groups:[3,3],glyph:'steps',
-  flavor:"Луна пробивается сквозь ветви пятнами света. Легко перепутать тропу с чужими шагами."},
- {id:5,name:"Передышка",special:true,glyph:'fire',
-  flavor:"Полночь. Дальше без остановки — верная ошибка. Здесь можно перевести дух у прикрытого костра."},
- {id:6,name:"Через силу",enemy:"Ноги гудят от усталости",fixed:[2,3,4],groups:[3],glyph:'uphill',
-  flavor:"Тело отяжелело, земля — вязкая. Каждый шаг звучит громче, чем хотелось бы."},
- {id:7,name:"На излёте",enemy:"Луна клонится к горизонту",fixed:[4,5,6],groups:[3],glyph:'moon',
-  flavor:"Луна клонится к горизонту, скоро рассвет — а с ним конец укрытия."},
- {id:8,name:"Рубеж",enemy:"Рассвет и прожектора",fixed:[],groups:[3,3],glyph:'sunrise',
-  flavor:"Небо светлеет всерьёз. Река, колючая проволока, прожектора. Последний рывок, пока ещё есть темнота."},
+/* ============================================================
+   LOCALIZATION
+   ============================================================ */
+let LANG=null; // 'be' | 'pl' | 'ru' — chosen on the language screen
+const LANG_OPTIONS=[
+  {code:'be',native:'Беларуская',prompt:'Абярыце мову',sub:'гульня пра перамытніка'},
+  {code:'pl',native:'Polski',prompt:'Wybierz język',sub:'gra o przemytniku'},
+  {code:'ru',native:'Русский',prompt:'Выберите язык',sub:'игра про контрабандиста'},
 ];
 
-const SLOT_META={
-  crit:{name:"Твёрдая рука",desc:"Перевернуть кубик на другую грань",icon:'flip',color:'--crit'},
-  counter:{name:"Хладнокровие",desc:"±1 к одному кубику",icon:'pm',color:'--counter'},
-  magic:{name:"Чутьё",desc:"Перебросить один кубик",icon:'moon',color:'--magic'},
-  con:{name:"Выносливость",desc:"Перебросить сколько угодно кубиков",icon:'heart',color:'--con'},
-  xp:{name:"Опыт",desc:"Заполняется каждый раз, когда выпадает 1 — на рубежах и на стоянке у костра. Ряд закрыт — заряд способности (кроме Выносливости), до предела в 7",icon:'star',color:'--xp'},
-  bonfire:{name:"Схрон",desc:"В зоне 5 нет боя: +1 заряд Выносливости и списание Опыта по значению кости, отложенной сюда при подготовке",icon:'bag',color:'--lamp'},
+const ZONES_BASE=[
+ {id:1,fixed:[4,5],groups:[3],glyph:'gate'},
+ {id:2,fixed:[2,3,4],groups:[2],glyph:'window'},
+ {id:3,fixed:[3,4,5],groups:[3],glyph:'tree'},
+ {id:4,fixed:[],groups:[3,3],glyph:'steps'},
+ {id:5,special:true,glyph:'fire'},
+ {id:6,fixed:[2,3,4],groups:[3],glyph:'uphill'},
+ {id:7,fixed:[4,5,6],groups:[3],glyph:'moon'},
+ {id:8,fixed:[],groups:[3,3],glyph:'sunrise'},
+];
+const RANK_THRESHOLDS=[11,14,19,Infinity];
+const HOWTO_ICONS=['gate','window','flip','sunrise'];
+
+const LOCALES={
+ru:{
+  appName:"Тропой контрабандиста",
+  zones:[
+    {name:"Выход",enemy:"Скрипучая калитка",flavor:"Ещё видны тёплые окна крайних домов посёлка. Луна ещё не взошла — время выходить, пока темнота на твоей стороне."},
+    {name:"Местечко",enemy:"Последние окна",flavor:"Улочки ещё не совсем позади. Небо на востоке уже сереет — задерживаться нельзя."},
+    {name:"Под кронами",enemy:"Первый лай вдалеке",flavor:"Под тенью деревьев спокойнее. Но где-то сзади забрехала собака — кто-то заметил лишние следы."},
+    {name:"Слепая тропа",enemy:"Шаги в темноте",flavor:"Луна пробивается сквозь ветви пятнами света. Легко перепутать тропу с чужими шагами."},
+    {name:"Передышка",flavor:"Полночь. Дальше без остановки — верная ошибка. Здесь можно перевести дух у прикрытого костра."},
+    {name:"Через силу",enemy:"Ноги гудят от усталости",flavor:"Тело отяжелело, земля — вязкая. Каждый шаг звучит громче, чем хотелось бы."},
+    {name:"На излёте",enemy:"Луна клонится к горизонту",flavor:"Луна клонится к горизонту, скоро рассвет — а с ним конец укрытия."},
+    {name:"Рубеж",enemy:"Рассвет и прожектора",flavor:"Небо светлеет всерьёз. Река, колючая проволока, прожектора. Последний рывок, пока ещё есть темнота."},
+  ],
+  slots:{
+    crit:{name:"Твёрдая рука",desc:"Перевернуть кубик на другую грань"},
+    counter:{name:"Хладнокровие",desc:"±1 к одному кубику"},
+    magic:{name:"Чутьё",desc:"Перебросить один кубик"},
+    con:{name:"Выносливость",desc:"Перебросить сколько угодно кубиков"},
+    xp:{name:"Опыт",desc:"Заполняется каждый раз, когда выпадает 1 — на рубежах и на стоянке у костра. Ряд закрыт — заряд способности (кроме Выносливости), до предела в 7"},
+    bonfire:{name:"Схрон",desc:"В зоне 5 нет боя: +1 заряд Выносливости и списание Опыта по значению кости, отложенной сюда при подготовке"},
+  },
+  ranks:["Любимец Большой Медведицы","Гроза заставы","Бывалый контрабандист","Меченый — но живой"],
+  rules:[
+   {title:"Цель",body:"Проведите контрабандиста через восемь ночных рубежей, не исчерпав запас сил."},
+   {title:"Подготовка",body:"Бросьте все 6 костей (до 5 перебросов). Раздайте кости по одной на: Твёрдая рука, Хладнокровие, Чутьё, Выносливость, Опыт (сразу зачёркиваете кружки), Схрон (пригодится у костра).",note:"Чем больше выпало — тем больше зарядов."},
+   {title:"Каждый рубеж",body:"Бросайте все 6 костей заново. За каждую единицу — кружок Опыта. Одни значения должны просто присутствовать, значок «×N» — N одинаковых любых."},
+   {title:"Способности",list:["Твёрдая рука — переворот кости (1↔6, 2↔5, 3↔4)","Хладнокровие — ±1 к кости","Чутьё — переброс одной кости","Выносливость — переброс любого числа костей разом"],note:"Каждое применение — один заряд (максимум 7)."},
+   {title:"Опыт",body:"Каждый раз, когда выпадает 1, заполняется кружок Опыта — на рубежах и на стоянке у костра. Завершение целого ряда даёт один дополнительный заряд любой способности на выбор (кроме Выносливости), до предела в 7."},
+   {title:"Стоянка",body:"В зоне 5 нет боя. Вместо этого вы получаете один дополнительный заряд Выносливости и зачёркиваете столько кружков Опыта, сколько составляет значение кости, отложенной в Схрон при подготовке."},
+   {title:"Победа и поражение",body:"Победа — за зоной 8. Поражение — заряды кончились, а требование не выполнено."},
+   {title:"Итоговый счёт",body:"Сумма всех использованных зарядов — чем меньше, тем лучше.",note:"≤11 — Любимец Медведицы · 12–14 — Гроза заставы · 15–19 — Бывалый · 20+ — Меченый, но живой"},
+   {note:"Сюжет вдохновлён романом Сергея Пясецкого «Любовник Большой Медведицы», белорусским музыкальным проектом «Народны альбом», а также природой и историей местечка Раков. Механика — на основе принт-энд-плей игры «Lantern»."},
+  ],
+  loseTexts:[
+   {title:"Фонарь погас",body:"Силы иссякли на «{zone}». Патруль всё ближе."},
+   {title:"Свисток патруля",body:"На «{zone}» кто-то заметил лишнее. Пора уходить — но уже поздно."},
+   {title:"Собаки взяли след",body:"На «{zone}» лай раздался слишком близко. Ноги подвели."},
+   {title:"Луч прожектора",body:"Свет скользнул прямо по вам на «{zone}». Спрятаться не вышло."},
+   {title:"Ноги подкосились",body:"На «{zone}» силы кончились раньше, чем закончилась ночь."},
+   {title:"Тропа привела не туда",body:"На «{zone}» вы сбились с пути — и обратно дороги уже нет."},
+   {title:"Голос из темноты",body:"«Стоять!» — крикнули на «{zone}». Больше вы ничего не услышали."},
+   {title:"Рассвет пришёл раньше",body:"На «{zone}» темнота кончилась слишком рано, а вы — нет."},
+   {title:"Схвачен на подходе",body:"На «{zone}» удача отвернулась. В этот раз — не повезло."},
+   {title:"Слишком громкая тишина",body:"На «{zone}» что-то пошло не так — и пути дальше не нашлось."},
+  ],
+  ui:{
+    changeLangLabel:'Язык интерфейса',
+    rollHint:(name)=>`Бросьте все 6 костей, чтобы пройти рубеж «${name}».`,
+    comboReady:'Комбинация собрана — можно идти дальше.',
+    comboMissing:'Не хватает комбинации. Выберите способность ниже и кубик для изменения.',
+    bonfireRested:'Вы отдохнули у костра.',
+    bonfireIntro:'Здесь можно перевести дух перед второй половиной пути.',
+    awardHint:'Ряд опыта завершён — выберите награду.',
+    legendFixed:'нужное значение',
+    legendGroup:'N одинаковых',
+    anyLabel:'ЛЮБЫЕ',
+    rewardTitle:'Награда!',
+    rewardFlavor:(n)=>`Ряд опыта завершён. Осталось наград: ${n}. Выберите способность.`,
+    rollAllBtn:'Бросить все 6 костей',
+    goNextBtn:'Идти дальше →',
+    restBtn:'Отдохнуть у костра',
+    continueBtn:'Продолжить путь →',
+    counterHint:(v)=>`Кубик показывает ${v}. Прибавить или отнять 1?`,
+    minusOne:'−1', plusOne:'+1',
+    cancelBtn:'Отмена',
+    conHint:'Коснитесь костей выше, которые хотите перебросить, затем подтвердите.',
+    rerollN:(n)=>`Перебросить (${n})`,
+    touchDieHint:(verb)=>`Коснитесь кубика выше, который хотите ${verb}.`,
+    verbFlip:'перевернуть', verbReroll:'перебросить',
+    notEnoughBtn:'Не хватает комбинации',
+    tabPath:'Путь', tabGear:'Снаряжение',
+    sumLabel:'сумма',
+    rerollTitle:(left,max)=>`Переброс (${left}/${max})`,
+    abilitiesSection:'Умения',
+    xpBonfireSection:'Опыт и схрон',
+    startRouteBtn:'Выйти на маршрут',
+    introEyebrow:'Соло-приключение на костях',
+    introTitle:'Звёзды указывают путь',
+    introBody:'Луна ещё не взошла, но Большая Медведица уже смотрит на восток. Шесть костей за пазухой, твёрдая рука — и можно выходить.',
+    howto:[
+      ['Бросьте кости','На каждом рубеже — новый бросок всех 6 костей'],
+      ['Сравните с требованием','Нужны конкретные значения и/или N одинаковых'],
+      ['Не хватает — почините','4 способности меняют значения на костях'],
+      ['Дойдите до 8 рубежа','Кончились заряды у всех — поход окончен'],
+    ],
+    beginBtn:'Бросить кости и выйти затемно',
+    setupEyebrow:'Перед выходом',
+    setupTitle:'Разложите кости',
+    setupBody:'Перетащите кубик на нужную карточку (или коснитесь кубика, затем карточки). Значение станет числом зарядов.',
+    wonEyebrow:'Вольная сторона',
+    wonTitle:'Вы прошли',
+    wonBody:'Река позади, прожектора шарят по пустому берегу. Ваше имя ещё долго будут поминать в корчмах по обе стороны рубежа.',
+    scoreLine:(score)=>`Счёт похода: ${score} (меньше — лучше)`,
+    lostEyebrow:'Провал',
+    newRunBtn:'Начать новый переход',
+    rulesTitle:'Правила пути',
+    understoodBtn:'Понятно',
+    closeAria:'Закрыть',
+    bonfireDescVisited:'В зоне 5 боя не было: вы получили +1 заряд Выносливости и зачеркнули столько кружков Опыта, сколько составляло значение этой кости.',
+    bonfireDescPending:(n)=>`В зоне 5 боя не будет: вы получите +1 заряд Выносливости и зачеркнёте ${n} круг(а/ов) Опыта — по значению кости, отложенной сюда при подготовке.`,
+    xpCardTitle:'Опыт',
+    xpCardDesc:'Каждый раз, когда выпадает 1, заполняется кружок Опыта — на рубежах и на стоянке у костра. Завершение целого ряда даёт один дополнительный заряд любой способности на выбор (кроме Выносливости), до предела в 7.',
+    zoneCaptionPrefix:'Рубеж ', zoneCaptionOf:' из 8 · ',
+  },
+},
+be:{
+  appName:"Сцежкай перамытніка",
+  zones:[
+    {name:"Выхад",enemy:"Рыпучая веснічка",flavor:"Яшчэ бачныя цёплыя вокны крайніх хат пасёлка. Месяц яшчэ не ўзышоў — час выходзіць, пакуль цемра на тваім баку."},
+    {name:"Мястэчка",enemy:"Апошнія вокны",flavor:"Вулачкі яшчэ не зусім ззаду. Неба на ўсходзе ўжо шарэе — затрымлівацца нельга."},
+    {name:"Пад кронамі",enemy:"Першы брэх удалечыні",flavor:"У цені дрэў спакайней. Але недзе ззаду забрахаў сабака — нехта заўважыў лішнія сляды."},
+    {name:"Сляпая сцежка",enemy:"Крокі ў цемры",flavor:"Месяц прабіваецца скрозь голле плямамі святла. Лёгка пераблытаць сцежку з чужымі крокамі."},
+    {name:"Перадышка",flavor:"Поўнач. Далей без прыпынку — пэўная памылка. Тут можна перавесці дух ля прыкрытага вогнішча."},
+    {name:"Праз сілу",enemy:"Ногі гудуць ад стомы",flavor:"Цела ацяжэла, зямля — вязкая. Кожны крок гучыць мацней, чым хацелася б."},
+    {name:"На зыходзе",enemy:"Месяц хіліцца да небасхілу",flavor:"Месяц хіліцца да небасхілу, хутка світанак — а з ім канец прытулку."},
+    {name:"Рубеж",enemy:"Світанак і пражэктары",flavor:"Неба святлее ўсур'ёз. Рака, калючы дрот, пражэктары. Апошні рывок, пакуль яшчэ ёсць цемра."},
+  ],
+  slots:{
+    crit:{name:"Цвёрдая рука",desc:"Перавярнуць кубік на іншую грань"},
+    counter:{name:"Стрыманасць",desc:"±1 да аднаго кубіка"},
+    magic:{name:"Чуйнасць",desc:"Перакінуць адзін кубік"},
+    con:{name:"Вынослівасць",desc:"Перакінуць колькі заўгодна кубікаў"},
+    xp:{name:"Досвед",desc:"Запаўняецца кожны раз, калі выпадае 1 — на рубяжах і на прывале ля вогнішча. Рад закрыты — зарад здольнасці (акрамя Вынослівасці), да мяжы ў 7"},
+    bonfire:{name:"Схрон",desc:"У зоне 5 бою няма: +1 зарад Вынослівасці і спісанне Досведу па значэнні косці, адкладзенай сюды пры падрыхтоўцы"},
+  },
+  ranks:["Улюбёнец Вялікай Мядзведзіцы","Пагроза заставы","Бывалы перамытнік","Мечаны — але жывы"],
+  rules:[
+   {title:"Мэта",body:"Правядзіце перамытніка праз восем начных рубяжоў, не вычарпаўшы запас сіл."},
+   {title:"Падрыхтоўка",body:"Кіньце ўсе 6 касцей (да 5 перакідаў). Раздайце косці па адной на: Цвёрдая рука, Стрыманасць, Чуйнасць, Вынослівасць, Досвед (адразу закрэсліваеце гурткі), Схрон (спатрэбіцца ля вогнішча).",note:"Чым больш выпала — тым больш зарадаў."},
+   {title:"Кожны рубеж",body:"Кідайце ўсе 6 касцей нанова. За кожную адзінку — гурток Досведу. Адны значэнні павінны проста прысутнічаць, значок «×N» — N аднолькавых любых."},
+   {title:"Здольнасці",list:["Цвёрдая рука — пераварот косці (1↔6, 2↔5, 3↔4)","Стрыманасць — ±1 да косці","Чуйнасць — перакід адной косці","Вынослівасць — перакід любой колькасці касцей адразу"],note:"Кожнае прымяненне — адзін зарад (максімум 7)."},
+   {title:"Досвед",body:"Кожны раз, калі выпадае 1, запаўняецца гурток Досведу — на рубяжах і на прывале ля вогнішча. Завяршэнне цэлага рада дае адзін дадатковы зарад любой здольнасці на выбар (акрамя Вынослівасці), да мяжы ў 7."},
+   {title:"Прывал",body:"У зоне 5 бою няма. Замест гэтага вы атрымліваеце адзін дадатковы зарад Вынослівасці і закрэсліваеце столькі гурткоў Досведу, колькі складае значэнне косці, адкладзенай у Схрон пры падрыхтоўцы."},
+   {title:"Перамога і паражэнне",body:"Перамога — за зонай 8. Паражэнне — зарады скончыліся, а патрабаванне не выканана."},
+   {title:"Выніковы лік",body:"Сума ўсіх скарыстаных зарадаў — чым менш, тым лепш.",note:"≤11 — Улюбёнец Мядзведзіцы · 12–14 — Пагроза заставы · 15–19 — Бывалы · 20+ — Мечаны, але жывы"},
+   {note:"Сюжэт натхнёны раманам Сяргея Пясецкага «Каханак Вялікай Мядзведзіцы», беларускім музычным праектам «Народны альбом», а таксама прыродай і гісторыяй мястэчка Ракаў. Механіка — на аснове прынт-энд-плэй гульні «Lantern»."},
+  ],
+  loseTexts:[
+   {title:"Ліхтар патух",body:"Сілы вычарпаліся на «{zone}». Патруль усё бліжэй."},
+   {title:"Свісток патруля",body:"На «{zone}» нехта заўважыў лішняе. Час сыходзіць — але ўжо позна."},
+   {title:"Сабакі ўзялі след",body:"На «{zone}» брэх пачуўся занадта блізка. Ногі падвялі."},
+   {title:"Прамень пражэктара",body:"Святло слізганула проста па вас на «{zone}». Схавацца не выйшла."},
+   {title:"Ногі падкасіліся",body:"На «{zone}» сілы скончыліся раней, чым скончылася ноч."},
+   {title:"Сцежка вывела не туды",body:"На «{zone}» вы збіліся з дарогі — і назад шляху ўжо няма."},
+   {title:"Голас з цемры",body:"«Стаяць!» — крыкнулі на «{zone}». Больш вы нічога не пачулі."},
+   {title:"Світанак прыйшоў раней",body:"На «{zone}» цемра скончылася занадта рана, а вы — не."},
+   {title:"Схоплены на падыходзе",body:"На «{zone}» удача адвярнулася. Гэтым разам — не пашанцавала."},
+   {title:"Занадта гучная цішыня",body:"На «{zone}» нешта пайшло не так — і шляху далей не знайшлося."},
+  ],
+  ui:{
+    changeLangLabel:'Мова інтэрфейсу',
+    rollHint:(name)=>`Кіньце ўсе 6 касцей, каб прайсці рубеж «${name}».`,
+    comboReady:'Камбінацыя сабрана — можна ісці далей.',
+    comboMissing:'Не хапае камбінацыі. Выберыце здольнасць ніжэй і косць для змены.',
+    bonfireRested:'Вы адпачылі ля вогнішча.',
+    bonfireIntro:'Тут можна перавесці дух перад другой паловай шляху.',
+    awardHint:'Рад досведу завершаны — выберыце ўзнагароду.',
+    legendFixed:'патрэбнае значэнне',
+    legendGroup:'N аднолькавых',
+    anyLabel:'ЛЮБЫЯ',
+    rewardTitle:'Узнагарода!',
+    rewardFlavor:(n)=>`Рад досведу завершаны. Засталося ўзнагарод: ${n}. Выберыце здольнасць.`,
+    rollAllBtn:'Кінуць усе 6 касцей',
+    goNextBtn:'Ісці далей →',
+    restBtn:'Адпачыць ля вогнішча',
+    continueBtn:'Працягнуць шлях →',
+    counterHint:(v)=>`Косць паказвае ${v}. Дадаць ці адняць 1?`,
+    minusOne:'−1', plusOne:'+1',
+    cancelBtn:'Скасаваць',
+    conHint:'Дакраніцеся да касцей вышэй, якія хочаце перакінуць, затым пацвердзіце.',
+    rerollN:(n)=>`Перакінуць (${n})`,
+    touchDieHint:(verb)=>`Дакраніцеся да косці вышэй, якую хочаце ${verb}.`,
+    verbFlip:'перавярнуць', verbReroll:'перакінуць',
+    notEnoughBtn:'Не хапае камбінацыі',
+    tabPath:'Шлях', tabGear:'Спараджэнне',
+    sumLabel:'сума',
+    rerollTitle:(left,max)=>`Перакід (${left}/${max})`,
+    abilitiesSection:'Уменні',
+    xpBonfireSection:'Досвед і схрон',
+    startRouteBtn:'Выйсці на маршрут',
+    introEyebrow:'Сола-прыгода на касцях',
+    introTitle:'Зоркі паказваюць шлях',
+    introBody:'Месяц яшчэ не ўзышоў, але Вялікая Мядзведзіца ўжо глядзіць на ўсход. Шэсць касцей за пазухай, цвёрдая рука — і можна выходзіць.',
+    howto:[
+      ['Кіньце косці','На кожным рубяжы — новы кідок усіх 6 касцей'],
+      ['Параўнайце з патрабаваннем','Патрэбныя канкрэтныя значэнні і/або N аднолькавых'],
+      ['Не хапае — паправіце','4 здольнасці змяняюць значэнні на касцях'],
+      ['Дайдзіце да 8-га рубяжа','Скончыліся зарады ва ўсіх — паход завершаны'],
+    ],
+    beginBtn:'Кінуць косці і выйсці зацемна',
+    setupEyebrow:'Перад выхадам',
+    setupTitle:'Раскладзіце косці',
+    setupBody:'Перацягніце косць на патрэбную картку (або дакраніцеся да косці, затым карткі). Значэнне стане лікам зарадаў.',
+    wonEyebrow:'Вольны бок',
+    wonTitle:'Вы прайшлі',
+    wonBody:'Рака ззаду, пражэктары шастаюць па пустым беразе. Ваша імя яшчэ доўга будуць узгадваць у карчмах па абодва бакі рубяжа.',
+    scoreLine:(score)=>`Лік паходу: ${score} (менш — лепш)`,
+    lostEyebrow:'Правал',
+    newRunBtn:'Пачаць новы пераход',
+    rulesTitle:'Правілы шляху',
+    understoodBtn:'Зразумела',
+    closeAria:'Закрыць',
+    bonfireDescVisited:'У зоне 5 бою не было: вы атрымалі +1 зарад Вынослівасці і закрэслілі столькі гурткоў Досведу, колькі складала значэнне гэтай косці.',
+    bonfireDescPending:(n)=>`У зоне 5 бою не будзе: вы атрымаеце +1 зарад Вынослівасці і закрэсліце ${n} гурток(і/аў) Досведу — па значэнні косці, адкладзенай сюды пры падрыхтоўцы.`,
+    xpCardTitle:'Досвед',
+    xpCardDesc:'Кожны раз, калі выпадае 1, запаўняецца гурток Досведу — на рубяжах і на прывале ля вогнішча. Завяршэнне цэлага рада дае адзін дадатковы зарад любой здольнасці на выбар (акрамя Вынослівасці), да мяжы ў 7.',
+    zoneCaptionPrefix:'Рубеж ', zoneCaptionOf:' з 8 · ',
+  },
+},
+pl:{
+  appName:"Szlakiem przemytnika",
+  zones:[
+    {name:"Wyjście",enemy:"Skrzypiąca furtka",flavor:"Wciąż widać ciepłe okna skrajnych domów wioski. Księżyc jeszcze nie wzeszedł — czas wyruszyć, póki ciemność jest po twojej stronie."},
+    {name:"Miasteczko",enemy:"Ostatnie okna",flavor:"Uliczki jeszcze nie całkiem za tobą. Niebo na wschodzie już szarzeje — nie można się ociągać."},
+    {name:"Pod koronami drzew",enemy:"Pierwsze szczekanie w oddali",flavor:"W cieniu drzew spokojniej. Ale gdzieś z tyłu zaszczekał pies — ktoś zauważył zbędne ślady."},
+    {name:"Ślepa ścieżka",enemy:"Kroki w ciemności",flavor:"Księżyc przebija się przez gałęzie plamami światła. Łatwo pomylić ścieżkę z cudzymi krokami."},
+    {name:"Odpoczynek",flavor:"Północ. Dalej bez postoju — pewny błąd. Tu można złapać oddech przy osłoniętym ognisku."},
+    {name:"Pod górę",enemy:"Nogi drętwieją ze zmęczenia",flavor:"Ciało zrobiło się ciężkie, ziemia — grząska. Każdy krok brzmi głośniej, niż by się chciało."},
+    {name:"Na wyczerpaniu",enemy:"Księżyc chyli się ku horyzontowi",flavor:"Księżyc chyli się ku horyzontowi, zaraz świt — a wraz z nim koniec kryjówki."},
+    {name:"Rubież",enemy:"Świt i reflektory",flavor:"Niebo jaśnieje na dobre. Rzeka, drut kolczasty, reflektory. Ostatni zryw, póki jeszcze jest ciemność."},
+  ],
+  slots:{
+    crit:{name:"Pewna ręka",desc:"Odwrócić kostkę na inną ściankę"},
+    counter:{name:"Opanowanie",desc:"±1 do jednej kostki"},
+    magic:{name:"Wyczucie",desc:"Przerzucić jedną kostkę"},
+    con:{name:"Wytrzymałość",desc:"Przerzucić dowolną liczbę kostek"},
+    xp:{name:"Doświadczenie",desc:"Wypełnia się za każdym razem, gdy wypadnie 1 — na rubieżach i podczas postoju przy ognisku. Zapełniony rząd — ładunek zdolności (poza Wytrzymałością), do limitu 7"},
+    bonfire:{name:"Skrytka",desc:"W strefie 5 nie ma walki: +1 ładunek Wytrzymałości i odjęcie Doświadczenia według wartości kostki odłożonej tu podczas przygotowań"},
+  },
+  ranks:["Ulubieniec Wielkiej Niedźwiedzicy","Postrach posterunku","Doświadczony przemytnik","Naznaczony — ale żywy"],
+  rules:[
+   {title:"Cel",body:"Przeprowadź przemytnika przez osiem nocnych rubieży, nie wyczerpując zapasu sił."},
+   {title:"Przygotowanie",body:"Rzuć wszystkimi 6 kośćmi (do 5 przerzutów). Rozdziel kości po jednej na: Pewna ręka, Opanowanie, Wyczucie, Wytrzymałość, Doświadczenie (od razu skreślasz kółka), Skrytka (przyda się przy ognisku).",note:"Im więcej wypadło — tym więcej ładunków."},
+   {title:"Każda rubież",body:"Rzuć wszystkimi 6 kośćmi na nowo. Za każdą jedynkę — kółko Doświadczenia. Niektóre wartości muszą po prostu wystąpić, znak «×N» — N takich samych, dowolnych."},
+   {title:"Zdolności",list:["Pewna ręka — odwrócenie kostki (1↔6, 2↔5, 3↔4)","Opanowanie — ±1 do kostki","Wyczucie — przerzut jednej kostki","Wytrzymałość — przerzut dowolnej liczby kostek naraz"],note:"Każde użycie — jeden ładunek (maksimum 7)."},
+   {title:"Doświadczenie",body:"Za każdym razem, gdy wypadnie 1, wypełnia się kółko Doświadczenia — na rubieżach i podczas postoju przy ognisku. Ukończenie całego rzędu daje jeden dodatkowy ładunek dowolnej zdolności do wyboru (poza Wytrzymałością), do limitu 7."},
+   {title:"Postój",body:"W strefie 5 nie ma walki. Zamiast tego otrzymujesz jeden dodatkowy ładunek Wytrzymałości i skreślasz tyle kółek Doświadczenia, ile wynosi wartość kostki odłożonej do Skrytki podczas przygotowań."},
+   {title:"Zwycięstwo i porażka",body:"Zwycięstwo — za strefą 8. Porażka — ładunki się skończyły, a wymaganie nie zostało spełnione."},
+   {title:"Wynik końcowy",body:"Suma wszystkich użytych ładunków — im mniej, tym lepiej.",note:"≤11 — Ulubieniec Niedźwiedzicy · 12–14 — Postrach posterunku · 15–19 — Doświadczony · 20+ — Naznaczony, ale żywy"},
+   {note:"Fabuła inspirowana powieścią Sergiusza Piaseckiego „Kochanek Wielkiej Niedźwiedzicy”, białoruskim projektem muzycznym „Narodny Albom”, a także przyrodą i historią miasteczka Raków. Mechanika oparta na grze print-and-play „Lantern”."},
+  ],
+  loseTexts:[
+   {title:"Latarnia zgasła",body:"Siły wyczerpały się na «{zone}». Patrol coraz bliżej."},
+   {title:"Gwizdek patrolu",body:"Na «{zone}» ktoś zauważył coś podejrzanego. Czas uciekać — ale już za późno."},
+   {title:"Psy wzięły trop",body:"Na «{zone}» szczekanie rozległo się zbyt blisko. Nogi zawiodły."},
+   {title:"Snop reflektora",body:"Światło prześlizgnęło się dokładnie po tobie na «{zone}». Nie udało się ukryć."},
+   {title:"Nogi ugięły się",body:"Na «{zone}» siły skończyły się, zanim skończyła się noc."},
+   {title:"Ścieżka zaprowadziła nie tam",body:"Na «{zone}» zgubiłeś drogę — i powrotu już nie ma."},
+   {title:"Głos z ciemności",body:"«Stać!» — krzyknięto na «{zone}». Nic więcej już nie usłyszałeś."},
+   {title:"Świt przyszedł wcześniej",body:"Na «{zone}» ciemność skończyła się zbyt wcześnie, a ty — nie."},
+   {title:"Schwytany tuż przed celem",body:"Na «{zone}» szczęście się odwróciło. Tym razem się nie udało."},
+   {title:"Zbyt głośna cisza",body:"Na «{zone}» coś poszło nie tak — i dalszej drogi nie udało się znaleźć."},
+  ],
+  ui:{
+    changeLangLabel:'Język interfejsu',
+    rollHint:(name)=>`Rzuć wszystkimi 6 kośćmi, aby przejść rubież «${name}».`,
+    comboReady:'Kombinacja ułożona — można iść dalej.',
+    comboMissing:'Brakuje kombinacji. Wybierz zdolność poniżej i kostkę do zmiany.',
+    bonfireRested:'Odpocząłeś przy ognisku.',
+    bonfireIntro:'Tu można złapać oddech przed drugą połową drogi.',
+    awardHint:'Rząd doświadczenia ukończony — wybierz nagrodę.',
+    legendFixed:'wymagana wartość',
+    legendGroup:'N takich samych',
+    anyLabel:'DOWOLNE',
+    rewardTitle:'Nagroda!',
+    rewardFlavor:(n)=>`Rząd doświadczenia ukończony. Pozostało nagród: ${n}. Wybierz zdolność.`,
+    rollAllBtn:'Rzuć wszystkimi 6 kośćmi',
+    goNextBtn:'Idź dalej →',
+    restBtn:'Odpocznij przy ognisku',
+    continueBtn:'Kontynuuj drogę →',
+    counterHint:(v)=>`Kostka pokazuje ${v}. Dodać czy odjąć 1?`,
+    minusOne:'−1', plusOne:'+1',
+    cancelBtn:'Anuluj',
+    conHint:'Dotknij kości powyżej, które chcesz przerzucić, a następnie potwierdź.',
+    rerollN:(n)=>`Przerzuć (${n})`,
+    touchDieHint:(verb)=>`Dotknij kostki powyżej, którą chcesz ${verb}.`,
+    verbFlip:'odwrócić', verbReroll:'przerzucić',
+    notEnoughBtn:'Brakuje kombinacji',
+    tabPath:'Droga', tabGear:'Wyposażenie',
+    sumLabel:'suma',
+    rerollTitle:(left,max)=>`Przerzut (${left}/${max})`,
+    abilitiesSection:'Zdolności',
+    xpBonfireSection:'Doświadczenie i skrytka',
+    startRouteBtn:'Wyrusz na trasę',
+    introEyebrow:'Przygoda solo na kościach',
+    introTitle:'Gwiazdy wskazują drogę',
+    introBody:'Księżyc jeszcze nie wzeszedł, ale Wielka Niedźwiedzica już patrzy na wschód. Sześć kości za pazuchą, pewna ręka — i można wyruszać.',
+    howto:[
+      ['Rzuć kośćmi','Na każdej rubieży — nowy rzut wszystkimi 6 kośćmi'],
+      ['Porównaj z wymaganiem','Potrzebne konkretne wartości i/lub N takich samych'],
+      ['Brakuje — napraw','4 zdolności zmieniają wartości na kościach'],
+      ['Dotrzyj do 8. rubieży','Skończyły się ładunki u wszystkich — wyprawa zakończona'],
+    ],
+    beginBtn:'Rzuć kośćmi i wyrusz o zmroku',
+    setupEyebrow:'Przed wymarszem',
+    setupTitle:'Rozłóż kości',
+    setupBody:'Przeciągnij kostkę na odpowiednią kartę (lub dotknij kostki, a potem karty). Wartość stanie się liczbą ładunków.',
+    wonEyebrow:'Wolna strona',
+    wonTitle:'Udało ci się',
+    wonBody:'Rzeka za tobą, reflektory przeczesują pusty brzeg. Twoje imię jeszcze długo będą wspominać w karczmach po obu stronach rubieży.',
+    scoreLine:(score)=>`Wynik wyprawy: ${score} (mniej — lepiej)`,
+    lostEyebrow:'Porażka',
+    newRunBtn:'Zacznij nowe przejście',
+    rulesTitle:'Zasady drogi',
+    understoodBtn:'Rozumiem',
+    closeAria:'Zamknij',
+    bonfireDescVisited:'W strefie 5 nie było walki: otrzymałeś +1 ładunek Wytrzymałości i skreśliłeś tyle kółek Doświadczenia, ile wynosiła wartość tej kostki.',
+    bonfireDescPending:(n)=>`W strefie 5 nie będzie walki: otrzymasz +1 ładunek Wytrzymałości i skreślisz ${n} kółek Doświadczenia — według wartości kostki odłożonej tu podczas przygotowań.`,
+    xpCardTitle:'Doświadczenie',
+    xpCardDesc:'Za każdym razem, gdy wypadnie 1, wypełnia się kółko Doświadczenia — na rubieżach i podczas postoju przy ognisku. Ukończenie całego rzędu daje jeden dodatkowy ładunek dowolnej zdolności do wyboru (poza Wytrzymałością), do limitu 7.',
+    zoneCaptionPrefix:'Rubież ', zoneCaptionOf:' z 8 · ',
+  },
+},
 };
-const RANKS=[[11,"Любимец Большой Медведицы"],[14,"Гроза заставы"],[19,"Бывалый контрабандист"],[Infinity,"Меченый — но живой"]];
 
-const RULES=[
- {title:"Цель",body:"Проведите контрабандиста через восемь ночных рубежей, не исчерпав запас сил."},
- {title:"Подготовка",body:"Бросьте все 6 костей (до 5 перебросов). Раздайте кости по одной на: Твёрдая рука, Хладнокровие, Чутьё, Выносливость, Опыт (сразу зачёркиваете кружки), Схрон (пригодится у костра).",note:"Чем больше выпало — тем больше зарядов."},
- {title:"Каждый рубеж",body:"Бросайте все 6 костей заново. За каждую единицу — кружок Опыта. Одни значения должны просто присутствовать, значок «×N» — N одинаковых любых."},
- {title:"Способности",list:["Твёрдая рука — переворот кости (1↔6, 2↔5, 3↔4)","Хладнокровие — ±1 к кости","Чутьё — переброс одной кости","Выносливость — переброс любого числа костей разом"],note:"Каждое применение — один заряд (максимум 7)."},
- {title:"Опыт",body:"Каждый раз, когда выпадает 1, заполняется кружок Опыта — на рубежах и на стоянке у костра. Завершение целого ряда даёт один дополнительный заряд любой способности на выбор (кроме Выносливости), до предела в 7."},
- {title:"Стоянка",body:"В зоне 5 нет боя. Вместо этого вы получаете один дополнительный заряд Выносливости и зачёркиваете столько кружков Опыта, сколько составляет значение кости, отложенной в Схрон при подготовке."},
- {title:"Победа и поражение",body:"Победа — за зоной 8. Поражение — заряды кончились, а требование не выполнено."},
- {title:"Итоговый счёт",body:"Сумма всех использованных зарядов — чем меньше, тем лучше.",note:"≤11 — Любимец Медведицы · 12–14 — Гроза заставы · 15–19 — Бывалый · 20+ — Меченый, но живой"},
-];
-
-const LOSE_TEXTS=[
- {title:"Фонарь погас",body:"Силы иссякли на «{zone}». Патруль всё ближе."},
- {title:"Свисток патруля",body:"На «{zone}» кто-то заметил лишнее. Пора уходить — но уже поздно."},
- {title:"Собаки взяли след",body:"На «{zone}» лай раздался слишком близко. Ноги подвели."},
- {title:"Луч прожектора",body:"Свет скользнул прямо по вам на «{zone}». Спрятаться не вышло."},
- {title:"Ноги подкосились",body:"На «{zone}» силы кончились раньше, чем закончилась ночь."},
- {title:"Тропа привела не туда",body:"На «{zone}» вы сбились с пути — и обратно дороги уже нет."},
- {title:"Голос из темноты",body:"«Стоять!» — крикнули на «{zone}». Больше вы ничего не услышали."},
- {title:"Рассвет пришёл раньше",body:"На «{zone}» темнота кончилась слишком рано, а вы — нет."},
- {title:"Схвачен на подходе",body:"На «{zone}» удача отвернулась. В этот раз — не повезло."},
- {title:"Слишком громкая тишина",body:"На «{zone}» что-то пошло не так — и пути дальше не нашлось."},
-];
+function T(){ return LOCALES[LANG]||LOCALES.ru; }
+function ZONES(){ return ZONES_BASE.map((b,i)=>Object.assign({},b,T().zones[i])); }
+function SLOT_META(){
+  const s=T().slots;
+  return {
+    crit:Object.assign({icon:'flip',color:'--crit'},s.crit),
+    counter:Object.assign({icon:'pm',color:'--counter'},s.counter),
+    magic:Object.assign({icon:'moon',color:'--magic'},s.magic),
+    con:Object.assign({icon:'heart',color:'--con'},s.con),
+    xp:Object.assign({icon:'star',color:'--xp'},s.xp),
+    bonfire:Object.assign({icon:'bag',color:'--lamp'},s.bonfire),
+  };
+}
+function RANKS(){ return RANK_THRESHOLDS.map((t,i)=>[t,T().ranks[i]]); }
+function RULES(){ return T().rules; }
+function LOSE_TEXTS(){ return T().loseTexts; }
 
 function freshState(){
   return {
-    phase:'intro', tab:'path',
+    phase: LANG?'intro':'lang', tab:'path',
     setupDice:[], assign:{}, selectedDie:null, rerollsLeft:MAX_REROLLS,
     abilities:{crit:{drawn:0,used:0},counter:{drawn:0,used:0},magic:{drawn:0,used:0}},
     con:{drawn:0,used:0},
     xp:Array(13).fill(false), xpRowsAwarded:[false,false,false], pendingBonus:0, afterBonusAction:null,
     bonfireCharges:0, bonfireVisited:false,
     zoneIndex:0, dice:[], zoneStep:0, zoneSolved:false, solveResult:null,
-    pendingAction:null, conSelection:[], rulesOpen:false, loseTextIdx:null,
+    pendingAction:null, conSelection:[], rulesOpen:false, langSwitchOpen:false, loseTextIdx:null,
   };
 }
 let S=freshState();
@@ -445,8 +766,17 @@ function checkRowCompletion(){
   });
 }
 
+function selectLanguage(code){ LANG=code; S.phase='intro'; render(); }
+function openLangSwitch(){ S.langSwitchOpen=true; render(); }
+function closeLangSwitch(){ S.langSwitchOpen=false; render(); }
+
 function beginSetupRoll(){ S.setupDice=rollN(6); S.assign={}; S.selectedDie=null; S.phase='setup'; S.rerollsLeft=MAX_REROLLS; render(); }
-function rerollSetup(){ if(S.rerollsLeft<=0) return; S.rerollsLeft--; S.setupDice=rollN(6); S.assign={}; S.selectedDie=null; render(); }
+function rerollSetup(){
+  if(S.rerollsLeft<=0) return;
+  S.rerollsLeft--; S.setupDice=rollN(6); S.assign={}; S.selectedDie=null;
+  const old=document.getElementById('setup-die-grid');
+  if(old && old.isConnected){ old.replaceWith(buildSetupDieGrid()); } else { render(); }
+}
 function pickDieForAssign(i){ S.selectedDie=(S.selectedDie===i)?null:i; render(); }
 function pickSlotForAssign(key){ if(S.assign[key]!==undefined) return; if(S.selectedDie===null) return; S.assign[key]=S.selectedDie; S.selectedDie=null; render(); }
 function confirmSetup(){
@@ -461,9 +791,9 @@ function confirmSetup(){
   render();
 }
 function startJourney(){ S.zoneIndex=0; setPhaseForZone(); }
-function currentZone(){ return ZONES[S.zoneIndex]; }
+function currentZone(){ return ZONES()[S.zoneIndex]; }
 function setPhaseForZone(){
-  const z=ZONES[S.zoneIndex];
+  const z=ZONES()[S.zoneIndex];
   if(z.special){ S.phase='bonfire'; S.bonfireVisited=false; }
   else { S.phase='playing'; S.zoneStep=0; S.dice=[]; S.pendingAction=null; }
 }
@@ -472,7 +802,7 @@ function evaluateZone(){
   const z=currentZone();
   const res=trySolve(S.dice,z.fixed,z.groups);
   S.zoneSolved=!!res; S.solveResult=res;
-  if(!S.zoneSolved && totalCharges()<=0){ S.phase='lost'; S.loseTextIdx=Math.floor(Math.random()*LOSE_TEXTS.length); }
+  if(!S.zoneSolved && totalCharges()<=0){ S.phase='lost'; S.loseTextIdx=Math.floor(Math.random()*LOSE_TEXTS().length); }
 }
 function startAction(type){ S.pendingAction={type}; S.conSelection=[]; render(); }
 function cancelAction(){ S.pendingAction=null; S.conSelection=[]; render(); }
@@ -494,7 +824,7 @@ function applyCon(){
   S.pendingAction=null; S.conSelection=[]; evaluateZone(); render();
 }
 function leaveZone(){ if(S.pendingBonus>0){ S.phase='award'; S.afterBonusAction='advance'; render(); return; } advanceZone(); }
-function advanceZone(){ if(S.zoneIndex>=ZONES.length-1){ S.phase='won'; render(); return; } S.zoneIndex++; setPhaseForZone(); render(); }
+function advanceZone(){ if(S.zoneIndex>=ZONES_BASE.length-1){ S.phase='won'; render(); return; } S.zoneIndex++; setPhaseForZone(); render(); }
 function doBonfire(){ if(S.con.drawn<7) S.con.drawn++; crossExperience(S.bonfireCharges); S.bonfireVisited=true; render(); }
 function bonfireContinue(){ if(S.pendingBonus>0){ S.phase='award'; S.afterBonusAction='advance'; render(); return; } advanceZone(); }
 function awardBonus(key){
@@ -545,6 +875,8 @@ const ICONS={
   path:'<path d="M5 20c3-4 3-8 0-12M19 20c-3-4-3-8 0-12M12 4v16" stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-dasharray="1 4"/><circle cx="12" cy="4" r="2" fill="currentColor"/><circle cx="12" cy="20" r="2" fill="currentColor"/>',
   list:'<path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
   close:'<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round"/>',
+  globe:'<circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M3 12h18M12 3c2.5 2.5 3.8 6 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-6-3.8-9s1.3-6.5 3.8-9Z" stroke="currentColor" stroke-width="1.4" fill="none"/>',
+  chev:'<path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
 };
 function svgIcon(name,color){
   const wrap=document.createElement('span'); wrap.style.display='flex';
@@ -565,7 +897,7 @@ function dieEl(value,opts={}){
   });
   d.appendChild(svg); return d;
 }
-function groupIconEl(n){ return el('div',{class:'grp-chip'},[el('span',{class:'n'},'×'+n),el('span',{class:'x'},'ЛЮБЫЕ')]); }
+function groupIconEl(n){ return el('div',{class:'grp-chip'},[el('span',{class:'n'},'×'+n),el('span',{class:'x'},T().ui.anyLabel)]); }
 
 /* ---------- drag & drop for setup dice ---------- */
 function findSlotElUnder(x,y){
@@ -619,44 +951,79 @@ function attachDieDrag(dieWrapEl,i){
   });
 }
 
+/* ===== language screen ===== */
+function langScreen(){
+  const p=el('div',{class:'full-screen enter'});
+  const scroll=el('div',{class:'screen-scroll',style:'display:flex;flex-direction:column;justify-content:center;'});
+  scroll.appendChild(el('div',{class:'lang-screen-title'},'Language · Мова · Język'));
+  const list=el('div',{class:'lang-screen-list'});
+  LANG_OPTIONS.forEach(o=>{
+    list.appendChild(el('button',{class:'lang-btn',onclick:()=>selectLanguage(o.code)},[
+      el('div',{class:'lang-btn-inner'},[el('span',{class:'lang-native'},o.prompt)]),
+      svgIcon('chev'),
+    ]));
+  });
+  scroll.appendChild(list);
+  p.appendChild(scroll);
+  return p;
+}
+function langSwitchSheet(){
+  const backdrop=el('div',{class:'sheet-backdrop',onclick:(e)=>{ if(e.target===backdrop) closeLangSwitch(); }});
+  const sheet=el('div',{class:'action-sheet'});
+  sheet.appendChild(el('div',{class:'sheet-title-row'},[
+    el('div',{class:'sheet-title',style:'text-align:left;font-size:17px;'},T().ui.changeLangLabel),
+    el('button',{class:'sheet-close-btn',onclick:closeLangSwitch,'aria-label':T().ui.closeAria},[svgIcon('close')]),
+  ]));
+  LANG_OPTIONS.forEach(o=>{
+    sheet.appendChild(el('button',{class:'sheet-btn'+(LANG===o.code?' primary':''),style:'margin-bottom:8px;',onclick:()=>{LANG=o.code;closeLangSwitch();}},o.native));
+  });
+  backdrop.appendChild(sheet);
+  return backdrop;
+}
+
 /* ===== app bar ===== */
 function appBar(){
   const bar=el('div',{class:'appbar'});
   const row=el('div',{class:'appbar-row'},[
-    el('div',{class:'brand'},[el('span',{class:'brand-mark'}),el('span',{class:'brand-name'},'Тропой контрабандиста')]),
-    el('button',{class:'icon-btn',onclick:openRules,html:`<svg viewBox="0 0 24 24">${ICONS.info}</svg>`}),
+    el('div',{class:'brand'},[el('span',{class:'brand-mark'}),el('span',{class:'brand-name'},T().appName)]),
+    el('div',{style:'display:flex;gap:8px;flex:0 0 auto;'},[
+      el('button',{class:'icon-btn',onclick:openLangSwitch,title:T().ui.changeLangLabel,html:`<svg viewBox="0 0 24 24">${ICONS.globe}</svg>`}),
+      el('button',{class:'icon-btn',onclick:openRules,html:`<svg viewBox="0 0 24 24">${ICONS.info}</svg>`}),
+    ]),
   ]);
   bar.appendChild(row);
   if(['playing','bonfire','award'].includes(S.phase)){
     const strip=el('div',{class:'progress-strip'});
-    ZONES.forEach((z,i)=>{
+    ZONES_BASE.forEach((z,i)=>{
       const cls=['progress-seg']; if(i<S.zoneIndex) cls.push('done'); else if(i===S.zoneIndex) cls.push('current');
       strip.appendChild(el('div',{class:cls.join(' ')}));
     });
     bar.appendChild(strip);
     const z=currentZone();
-    bar.appendChild(el('div',{class:'progress-caption'},[svgIcon(z.glyph),el('span',{},['Рубеж ',el('b',{},String(z.id)),' из 8 · ',z.name])]));
+    bar.appendChild(el('div',{class:'progress-caption'},[svgIcon(z.glyph),el('span',{},[T().ui.zoneCaptionPrefix,el('b',{},String(z.id)),T().ui.zoneCaptionOf,z.name])]));
     if(S.phase==='playing' && S.zoneStep===0){ const g=statusPill(); if(g) bar.appendChild(g); }
   }
   return bar;
 }
 
 function guidance(){
+  const ui=T().ui;
   if(S.phase==='playing'){
-    if(S.zoneStep===0) return {tone:'info',icon:'gate',text:`Бросьте все 6 костей, чтобы пройти рубеж «${currentZone().name}».`};
-    if(S.zoneSolved) return {tone:'ok',icon:'check',text:'Комбинация собрана — можно идти дальше.'};
-    return {tone:'fail',icon:'fire',text:'Не хватает комбинации. Выберите способность ниже и кубик для изменения.'};
+    if(S.zoneStep===0) return {tone:'info',icon:'gate',text:ui.rollHint(currentZone().name)};
+    if(S.zoneSolved) return {tone:'ok',icon:'check',text:ui.comboReady};
+    return {tone:'fail',icon:'fire',text:ui.comboMissing};
   }
-  if(S.phase==='bonfire') return S.bonfireVisited?{tone:'ok',icon:'check',text:'Вы отдохнули у костра.'}:{tone:'info',icon:'fire',text:'Здесь можно перевести дух перед второй половиной пути.'};
-  if(S.phase==='award') return {tone:'info',icon:'star',text:'Ряд опыта завершён — выберите награду.'};
+  if(S.phase==='bonfire') return S.bonfireVisited?{tone:'ok',icon:'check',text:ui.bonfireRested}:{tone:'info',icon:'fire',text:ui.bonfireIntro};
+  if(S.phase==='award') return {tone:'info',icon:'star',text:ui.awardHint};
   return null;
 }
 
 function reqRow(zone){
+  const ui=T().ui;
   const wrap=el('div',{});
   wrap.appendChild(el('div',{class:'chip-legend'},[
-    el('span',{},[el('span',{class:'legend-dot',style:'background:var(--fx-fixed)'}),'нужное значение']),
-    el('span',{},[el('span',{class:'legend-dot',style:'background:var(--fx-a)'}),'N одинаковых']),
+    el('span',{},[el('span',{class:'legend-dot',style:'background:var(--fx-fixed)'}),ui.legendFixed]),
+    el('span',{},[el('span',{class:'legend-dot',style:'background:var(--fx-a)'}),ui.legendGroup]),
   ]));
   const row=el('div',{class:'req-row'});
   zone.fixed.forEach(v=>row.appendChild(dieEl(v,{extraClass:'ghost'})));
@@ -690,6 +1057,7 @@ function statusPill(){
 }
 
 function pathContent(){
+  const ui=T().ui;
   const wrap=el('div',{class:'enter'});
   if(S.phase==='bonfire'){
     const z=currentZone();
@@ -702,8 +1070,8 @@ function pathContent(){
   }
   if(S.phase==='award'){
     const card=el('div',{class:'zone-card'});
-    card.appendChild(el('div',{class:'zone-head'},[el('div',{class:'zone-glyph'},[svgIcon('star')]),el('div',{class:'zone-headtext'},[el('div',{class:'zone-name'},'Награда!')])]));
-    card.appendChild(el('div',{class:'zone-flavor'},`Ряд опыта завершён. Осталось наград: ${S.pendingBonus}. Выберите способность.`));
+    card.appendChild(el('div',{class:'zone-head'},[el('div',{class:'zone-glyph'},[svgIcon('star')]),el('div',{class:'zone-headtext'},[el('div',{class:'zone-name'},ui.rewardTitle)])]));
+    card.appendChild(el('div',{class:'zone-flavor'},ui.rewardFlavor(S.pendingBonus)));
     wrap.appendChild(card);
     return wrap;
   }
@@ -722,41 +1090,40 @@ function pathContent(){
 }
 
 function sheetTabContent(){
+  const ui=T().ui; const SM=SLOT_META();
   const wrap=el('div',{class:'enter'});
   const mk=(key,data,label)=>{
-    const varName=SLOT_META[key].color; const left=data.drawn-data.used;
+    const varName=SM[key].color; const left=data.drawn-data.used;
     const bar=el('div',{class:'res-bar'});
     const total=Math.max(data.drawn,1);
     for(let i=0;i<total;i++){ bar.appendChild(el('div',{class:'res-seg'+(i<left?' on':''),style:i<left?`color:var(${varName});`:''})); }
     return el('div',{class:'res-card'},[
       el('div',{class:'res-top'},[
-        el('div',{class:'res-icon',style:`background:var(${varName}-soft,rgba(255,255,255,.08));color:var(${varName});`},[svgIcon(SLOT_META[key].icon)]),
+        el('div',{class:'res-icon',style:`background:var(${varName}-soft,rgba(255,255,255,.08));color:var(${varName});`},[svgIcon(SM[key].icon)]),
         el('div',{class:'res-name'},label),
         el('div',{class:'res-num',style:`color:var(${varName});`},String(left)),
       ]),
-      el('div',{class:'res-desc'},SLOT_META[key].desc),
+      el('div',{class:'res-desc'},SM[key].desc),
       bar,
     ]);
   };
-  wrap.appendChild(mk('crit',S.abilities.crit,'Твёрдая рука'));
-  wrap.appendChild(mk('counter',S.abilities.counter,'Хладнокровие'));
-  wrap.appendChild(mk('magic',S.abilities.magic,'Чутьё'));
-  wrap.appendChild(mk('con',S.con,'Выносливость'));
+  wrap.appendChild(mk('crit',S.abilities.crit,SM.crit.name));
+  wrap.appendChild(mk('counter',S.abilities.counter,SM.counter.name));
+  wrap.appendChild(mk('magic',S.abilities.magic,SM.magic.name));
+  wrap.appendChild(mk('con',S.con,SM.con.name));
 
   const bfCard=el('div',{class:'res-card'});
   bfCard.appendChild(el('div',{class:'res-top'},[
     el('div',{class:'res-icon',style:`background:rgba(232,178,88,.14);color:var(--lamp);`},[svgIcon('bag')]),
-    el('div',{class:'res-name'},'Схрон'),
+    el('div',{class:'res-name'},SM.bonfire.name),
     el('div',{class:'res-num',style:'color:var(--lamp);'},String(S.bonfireCharges)),
   ]));
-  bfCard.appendChild(el('div',{class:'res-desc'},S.bonfireVisited
-    ? 'В зоне 5 боя не было: вы получили +1 заряд Выносливости и зачеркнули столько кружков Опыта, сколько составляло значение этой кости.'
-    : `В зоне 5 боя не будет: вы получите +1 заряд Выносливости и зачеркнёте ${S.bonfireCharges} круг(а/ов) Опыта — по значению кости, отложенной сюда при подготовке.`));
+  bfCard.appendChild(el('div',{class:'res-desc'},S.bonfireVisited ? ui.bonfireDescVisited : ui.bonfireDescPending(S.bonfireCharges)));
   wrap.appendChild(bfCard);
 
   const xpCard=el('div',{class:'xp-card'});
-  xpCard.appendChild(el('div',{class:'xp-title'},'Опыт'));
-  xpCard.appendChild(el('div',{class:'xp-desc'},'Каждый раз, когда выпадает 1, заполняется кружок Опыта — на рубежах и на стоянке у костра. Завершение целого ряда даёт один дополнительный заряд любой способности на выбор (кроме Выносливости), до предела в 7.'));
+  xpCard.appendChild(el('div',{class:'xp-title'},ui.xpCardTitle));
+  xpCard.appendChild(el('div',{class:'xp-desc'},ui.xpCardDesc));
   const romans=['I','II','III'];
   rowRanges().forEach((r,ri)=>{
     const row=el('div',{class:'xp-row'});
@@ -770,26 +1137,27 @@ function sheetTabContent(){
 
 function actionZone(){
   if(!['playing','bonfire','award'].includes(S.phase)) return null;
+  const ui=T().ui; const SM=SLOT_META();
   const zone=el('div',{class:'actionzone'});
   if(S.phase==='bonfire'){
-    zone.appendChild(el('button',{class:'cta-btn',onclick:S.bonfireVisited?bonfireContinue:doBonfire},S.bonfireVisited?'Продолжить путь →':'Отдохнуть у костра'));
+    zone.appendChild(el('button',{class:'cta-btn',onclick:S.bonfireVisited?bonfireContinue:doBonfire},S.bonfireVisited?ui.continueBtn:ui.restBtn));
     return zone;
   }
   if(S.phase==='award'){
     const row=el('div',{class:'ability-strip'});
     ['crit','counter','magic'].forEach(key=>{
-      row.appendChild(el('button',{class:'ab-badge',style:`border-color:var(${SLOT_META[key].color});color:var(${SLOT_META[key].color});`,onclick:()=>awardBonus(key)},[svgIcon(SLOT_META[key].icon),el('span',{class:'ab-lbl'},SLOT_META[key].name),el('span',{class:'ab-desc'},SLOT_META[key].desc)]));
+      row.appendChild(el('button',{class:'ab-badge',style:`border-color:var(${SM[key].color});color:var(${SM[key].color});`,onclick:()=>awardBonus(key)},[svgIcon(SM[key].icon),el('span',{class:'ab-lbl'},SM[key].name),el('span',{class:'ab-desc'},SM[key].desc)]));
     });
     zone.appendChild(row);
     return zone;
   }
   // playing
   if(S.zoneStep===0){
-    zone.appendChild(el('button',{class:'cta-btn breathe',onclick:rollZone},'Бросить все 6 костей'));
+    zone.appendChild(el('button',{class:'cta-btn breathe',onclick:rollZone},ui.rollAllBtn));
     return zone;
   }
   if(S.zoneSolved){
-    zone.appendChild(el('button',{class:'cta-btn breathe',onclick:leaveZone},'Идти дальше →'));
+    zone.appendChild(el('button',{class:'cta-btn breathe',onclick:leaveZone},ui.goNextBtn));
     return zone;
   }
 
@@ -797,34 +1165,34 @@ function actionZone(){
   if(S.pendingAction){
     const ty=S.pendingAction.type;
     if(ty==='counter' && S.pendingAction.dieIdx!==undefined){
-      zone.appendChild(el('div',{class:'az-hint'},[svgIcon('pm'),el('span',{},`Кубик показывает ${S.dice[S.pendingAction.dieIdx]}. Прибавить или отнять 1?`)]));
+      zone.appendChild(el('div',{class:'az-hint'},[svgIcon('pm'),el('span',{},ui.counterHint(S.dice[S.pendingAction.dieIdx]))]));
       zone.appendChild(el('div',{class:'az-btn-row'},[
-        el('button',{class:'az-btn primary',onclick:()=>applyCounter(S.pendingAction.dieIdx,-1)},'−1'),
-        el('button',{class:'az-btn primary',onclick:()=>applyCounter(S.pendingAction.dieIdx,1)},'+1'),
-        el('button',{class:'az-btn ghost',onclick:cancelAction},'Отмена'),
+        el('button',{class:'az-btn primary',onclick:()=>applyCounter(S.pendingAction.dieIdx,-1)},ui.minusOne),
+        el('button',{class:'az-btn primary',onclick:()=>applyCounter(S.pendingAction.dieIdx,1)},ui.plusOne),
+        el('button',{class:'az-btn ghost',onclick:cancelAction},ui.cancelBtn),
       ]));
       return zone;
     }
     if(ty==='con'){
-      zone.appendChild(el('div',{class:'az-hint'},[svgIcon('heart'),el('span',{},'Коснитесь костей выше, которые хотите перебросить, затем подтвердите.')]));
+      zone.appendChild(el('div',{class:'az-hint'},[svgIcon('heart'),el('span',{},ui.conHint)]));
       zone.appendChild(el('div',{class:'az-btn-row'},[
-        el('button',{class:'az-btn primary',disabled:S.conSelection.length===0,onclick:applyCon},`Перебросить (${S.conSelection.length})`),
-        el('button',{class:'az-btn ghost',onclick:cancelAction},'Отмена'),
+        el('button',{class:'az-btn primary',disabled:S.conSelection.length===0,onclick:applyCon},ui.rerollN(S.conSelection.length)),
+        el('button',{class:'az-btn ghost',onclick:cancelAction},ui.cancelBtn),
       ]));
       return zone;
     }
     // crit / magic: waiting for a single tap on a die
     const icon = ty==='crit'?'flip':'moon';
-    const verb = ty==='crit'?'перевернуть':'перебросить';
-    zone.appendChild(el('div',{class:'az-hint'},[svgIcon(icon),el('span',{},`Коснитесь кубика выше, который хотите ${verb}.`)]));
-    zone.appendChild(el('div',{class:'az-btn-row'},[el('button',{class:'az-btn ghost',onclick:cancelAction},'Отмена')]));
+    const verb = ty==='crit'?ui.verbFlip:ui.verbReroll;
+    zone.appendChild(el('div',{class:'az-hint'},[svgIcon(icon),el('span',{},ui.touchDieHint(verb))]));
+    zone.appendChild(el('div',{class:'az-btn-row'},[el('button',{class:'az-btn ghost',onclick:cancelAction},ui.cancelBtn)]));
     return zone;
   }
 
   const row=el('div',{class:'ability-strip'});
   const mk=(data,key)=>{
-    const left=data.drawn-data.used; const varName=SLOT_META[key].color;
-    const b=el('button',{class:'ab-badge',style:`border-color:${left>0?`var(${varName})`:'var(--line)'};color:var(${varName});`,disabled:left<=0,onclick:()=>startAction(key)},[svgIcon(SLOT_META[key].icon),el('span',{class:'ab-lbl'},SLOT_META[key].name),el('span',{class:'ab-desc'},SLOT_META[key].desc)]);
+    const left=data.drawn-data.used; const varName=SM[key].color;
+    const b=el('button',{class:'ab-badge',style:`border-color:${left>0?`var(${varName})`:'var(--line)'};color:var(${varName});`,disabled:left<=0,onclick:()=>startAction(key)},[svgIcon(SM[key].icon),el('span',{class:'ab-lbl'},SM[key].name),el('span',{class:'ab-desc'},SM[key].desc)]);
     if(left>0) b.appendChild(el('span',{class:'ab-count'},String(left)));
     return b;
   };
@@ -833,72 +1201,60 @@ function actionZone(){
   row.appendChild(mk(S.abilities.magic,'magic'));
   row.appendChild(mk(S.con,'con'));
   zone.appendChild(row);
-  zone.appendChild(el('button',{class:'cta-btn',disabled:true,style:'opacity:.45;box-shadow:none;'},'Не хватает комбинации'));
+  zone.appendChild(el('button',{class:'cta-btn',disabled:true,style:'opacity:.45;box-shadow:none;'},ui.notEnoughBtn));
   return zone;
 }
 
 function tabBar(){
+  const ui=T().ui;
   const bar=el('div',{class:'tabbar'});
-  bar.appendChild(el('button',{class:'tab-btn'+(S.tab==='path'?' active':''),onclick:()=>setTab('path')},[svgIcon('path'),el('span',{},'Путь')]));
-  bar.appendChild(el('button',{class:'tab-btn'+(S.tab==='sheet'?' active':''),onclick:()=>setTab('sheet')},[svgIcon('list'),el('span',{},'Снаряжение')]));
+  bar.appendChild(el('button',{class:'tab-btn'+(S.tab==='path'?' active':''),onclick:()=>setTab('path')},[svgIcon('path'),el('span',{},ui.tabPath)]));
+  bar.appendChild(el('button',{class:'tab-btn'+(S.tab==='sheet'?' active':''),onclick:()=>setTab('sheet')},[svgIcon('list'),el('span',{},ui.tabGear)]));
   return bar;
 }
 
-
-function actionSheetOverlay(){
-  if(!S.pendingAction) return null;
-  const backdrop=el('div',{class:'sheet-backdrop',onclick:(e)=>{ if(e.target===backdrop) cancelAction(); }});
-  const sheet=el('div',{class:'action-sheet'});
-  sheet.appendChild(el('div',{class:'sheet-handle'}));
-  if(S.pendingAction.type==='counter' && S.pendingAction.dieIdx!==undefined){
-    sheet.appendChild(el('div',{class:'sheet-title'},`Кубик: ${S.dice[S.pendingAction.dieIdx]}. Прибавить или отнять 1?`));
-    sheet.appendChild(el('div',{class:'sheet-btn-row'},[
-      el('button',{class:'sheet-btn primary',onclick:()=>applyCounter(S.pendingAction.dieIdx,-1)},'−1'),
-      el('button',{class:'sheet-btn primary',onclick:()=>applyCounter(S.pendingAction.dieIdx,1)},'+1'),
-    ]));
-    sheet.appendChild(el('button',{class:'sheet-btn ghost',onclick:cancelAction},'Отмена'));
-  } else if(S.pendingAction.type==='con'){
-    sheet.appendChild(el('div',{class:'sheet-title'},'Выберите кубики для переброса'));
-    sheet.appendChild(el('div',{class:'sheet-hint'},'Нажмите на нужные кости на экране, затем подтвердите.'));
-    sheet.appendChild(el('div',{class:'sheet-btn-row'},[
-      el('button',{class:'sheet-btn primary',disabled:S.conSelection.length===0,onclick:applyCon},`Перебросить (${S.conSelection.length})`),
-    ]));
-    sheet.appendChild(el('button',{class:'sheet-btn ghost',onclick:cancelAction},'Отмена'));
-  } else {
-    sheet.appendChild(el('div',{class:'sheet-title'},'Нажмите на кубик, который хотите изменить'));
-    sheet.appendChild(el('button',{class:'sheet-btn ghost',onclick:cancelAction},'Отмена'));
+const DIPPER_PTS=[[77.9,33.4],[85.9,43.5],[53.0,47.8],[36.3,50.1],[22.1,51.9],[64.7,53.0],[7.4,61.7]];
+function buildStarfield(){
+  const field=el('div',{class:'starfield'});
+  for(let i=0;i<55;i++){
+    const size=(Math.random()*1.7+0.6).toFixed(2);
+    const top=(Math.random()*100).toFixed(2);
+    const left=(Math.random()*100).toFixed(2);
+    const dur=(Math.random()*2.6+1.8).toFixed(2);
+    const delay=(Math.random()*4).toFixed(2);
+    field.appendChild(el('div',{class:'star',style:`width:${size}px;height:${size}px;top:${top}%;left:${left}%;animation-duration:${dur}s;animation-delay:-${delay}s;`}));
   }
-  backdrop.appendChild(sheet);
-  return backdrop;
+  // Big Dipper — same element/size as regular stars, fixed position, no blink.
+  DIPPER_PTS.forEach(([left,top])=>{
+    field.appendChild(el('div',{class:'star fixed',style:`width:1.3px;height:1.3px;top:${top}%;left:${left}%;`}));
+  });
+  return field;
+}
+let STARFIELD_EL=null;
+function getStarfield(){
+  if(!STARFIELD_EL) STARFIELD_EL=buildStarfield();
+  return STARFIELD_EL;
 }
 
 function introScreen(){
+  const ui=T().ui;
   const p=el('div',{class:'full-screen enter'});
   const scroll=el('div',{class:'screen-scroll'});
-  scroll.appendChild(el('div',{class:'eyebrow'},'Соло-приключение на костях'));
-  scroll.appendChild(el('h1',{class:'h-title'},'Звёзды указывают путь'));
-  scroll.appendChild(el('p',{class:'p-body'},'Луна ещё не взошла, но Большая Медведица уже смотрит на восток. Шесть костей за пазухой, твёрдая рука — и можно выходить.'));
-  [
-    ['gate','Бросьте кости','На каждом рубеже — новый бросок всех 6 костей'],
-    ['window','Сравните с требованием','Нужны конкретные значения и/или N одинаковых'],
-    ['flip','Не хватает — почините','4 способности меняют значения на костях'],
-    ['sunrise','Дойдите до 8 рубежа','Кончились заряды у всех — поход окончен'],
-  ].forEach(([icon,title,desc],i)=>{
+  scroll.appendChild(el('div',{class:'eyebrow'},ui.introEyebrow));
+  scroll.appendChild(el('h1',{class:'h-title'},ui.introTitle));
+  scroll.appendChild(el('p',{class:'p-body'},ui.introBody));
+  ui.howto.forEach(([title,desc],i)=>{
     scroll.appendChild(el('div',{class:'howto-item'},[el('div',{class:'howto-num'},String(i+1)),el('div',{class:'howto-text'},[el('b',{},title),el('span',{},desc)])]));
   });
   p.appendChild(scroll);
-  p.appendChild(el('div',{class:'screen-footer'},[el('button',{class:'cta-btn',onclick:beginSetupRoll},'Бросить кости и выйти затемно')]));
+  p.appendChild(el('div',{class:'screen-footer'},[el('button',{class:'cta-btn',onclick:beginSetupRoll},ui.beginBtn)]));
   return p;
 }
 
-function setupScreen(){
-  const p=el('div',{class:'full-screen enter'});
-  const scroll=el('div',{class:'screen-scroll'});
-  scroll.appendChild(el('div',{class:'eyebrow'},'Перед выходом'));
-  scroll.appendChild(el('h1',{class:'h-title'},'Разложите кости'));
-  scroll.appendChild(el('p',{class:'p-body'},'Перетащите кубик на нужную карточку (или коснитесь кубика, затем карточки). Значение станет числом зарядов.'));
+function buildSetupDieGrid(){
+  const ui=T().ui;
   const sum=S.setupDice.reduce((a,b)=>a+b,0);
-  const dieGrid=el('div',{class:'setup-die-grid'});
+  const dieGrid=el('div',{class:'setup-die-grid',id:'setup-die-grid'});
   const dieEls=[];
   S.setupDice.forEach((v,i)=>{
     const assignedTo=Object.keys(S.assign).find(k=>S.assign[k]===i);
@@ -908,15 +1264,26 @@ function setupScreen(){
       dieGrid.appendChild(d); dieEls.push([d,i]);
     }
   });
-  dieGrid.appendChild(el('div',{class:'sum-chip'},[el('b',{},String(sum)),'сумма']));
+  dieGrid.appendChild(el('div',{class:'sum-chip'},[el('b',{},String(sum)),ui.sumLabel]));
   const allAssigned=Object.keys(S.assign).length===6;
-  dieGrid.appendChild(el('button',{class:'icon-btn',disabled:allAssigned||S.rerollsLeft<=0,onclick:rerollSetup,title:`Переброс (${S.rerollsLeft}/${MAX_REROLLS})`,html:`<svg viewBox="0 0 24 24">${ICONS.reroll}</svg>`}));
-  scroll.appendChild(dieGrid);
+  dieGrid.appendChild(el('button',{class:'icon-btn',disabled:allAssigned||S.rerollsLeft<=0,onclick:rerollSetup,title:ui.rerollTitle(S.rerollsLeft,MAX_REROLLS),html:`<svg viewBox="0 0 24 24">${ICONS.reroll}</svg>`}));
+  dieEls.forEach(([d,i])=>attachDieDrag(d,i));
+  return dieGrid;
+}
 
-  scroll.appendChild(el('div',{class:'section-title'},'Умения'));
+function setupScreen(){
+  const ui=T().ui; const SM=SLOT_META();
+  const p=el('div',{class:'full-screen enter'});
+  const scroll=el('div',{class:'screen-scroll'});
+  scroll.appendChild(el('div',{class:'eyebrow'},ui.setupEyebrow));
+  scroll.appendChild(el('h1',{class:'h-title'},ui.setupTitle));
+  scroll.appendChild(el('p',{class:'p-body'},ui.setupBody));
+  scroll.appendChild(buildSetupDieGrid());
+
+  scroll.appendChild(el('div',{class:'section-title'},ui.abilitiesSection));
   const abGrid=el('div',{class:'ability-grid'});
   ['crit','counter','magic','con'].forEach(key=>{
-    const filled=S.assign[key]!==undefined; const meta=SLOT_META[key];
+    const filled=S.assign[key]!==undefined; const meta=SM[key];
     abGrid.appendChild(el('div',{
       class:'ability-tile'+(filled?' filled':''),'data-slot':key,'data-filled':filled?'1':'0',
       onclick:()=>pickSlotForAssign(key),
@@ -931,10 +1298,10 @@ function setupScreen(){
   });
   scroll.appendChild(abGrid);
 
-  scroll.appendChild(el('div',{class:'section-title'},'Опыт и схрон'));
+  scroll.appendChild(el('div',{class:'section-title'},ui.xpBonfireSection));
   const list=el('div',{class:'slot-list'});
   ['xp','bonfire'].forEach(key=>{
-    const filled=S.assign[key]!==undefined; const meta=SLOT_META[key];
+    const filled=S.assign[key]!==undefined; const meta=SM[key];
     list.appendChild(el('div',{class:'slot-row'+(filled?' filled':''),'data-slot':key,'data-filled':filled?'1':'0',onclick:()=>pickSlotForAssign(key)},[
       el('div',{class:'slot-icon',style:`background:var(${meta.color}-soft,rgba(255,255,255,.08));color:var(${meta.color});`},[svgIcon(meta.icon)]),
       el('div',{class:'slot-text'},[el('div',{class:'slot-name'},meta.name),el('div',{class:'slot-desc'},meta.desc)]),
@@ -943,52 +1310,53 @@ function setupScreen(){
   });
   scroll.appendChild(list);
   p.appendChild(scroll);
-  p.appendChild(el('div',{class:'screen-footer'},[el('button',{class:'cta-btn',disabled:!allAssigned,onclick:confirmSetup},'Выйти на маршрут')]));
+  const allAssigned=Object.keys(S.assign).length===6;
+  p.appendChild(el('div',{class:'screen-footer'},[el('button',{class:'cta-btn',disabled:!allAssigned,onclick:confirmSetup},ui.startRouteBtn)]));
 
-  dieEls.forEach(([d,i])=>attachDieDrag(d,i));
   return p;
 }
 
 function endScreen(){
+  const ui=T().ui;
   const p=el('div',{class:'full-screen enter'});
   const scroll=el('div',{class:'screen-scroll'});
   const won=S.phase==='won';
   if(won){
     const score=S.abilities.crit.used+S.abilities.counter.used+S.abilities.magic.used+S.con.used;
-    const rank=RANKS.find(r=>score<=r[0])[1];
-    scroll.appendChild(el('div',{class:'eyebrow'},'Вольная сторона'));
-    scroll.appendChild(el('h1',{class:'h-title'},'Вы прошли'));
-    scroll.appendChild(el('p',{class:'p-body'},'Река позади, прожектора шарят по пустому берегу. Ваше имя ещё долго будут поминать в корчмах по обе стороны рубежа.'));
+    const rank=RANKS().find(r=>score<=r[0])[1];
+    scroll.appendChild(el('div',{class:'eyebrow'},ui.wonEyebrow));
+    scroll.appendChild(el('h1',{class:'h-title'},ui.wonTitle));
+    scroll.appendChild(el('p',{class:'p-body'},ui.wonBody));
     scroll.appendChild(el('span',{class:'rank-tag'},rank));
-    scroll.appendChild(el('div',{class:'score-line'},`Счёт похода: ${score} (меньше — лучше)`));
+    scroll.appendChild(el('div',{class:'score-line'},ui.scoreLine(score)));
   } else {
-    const t=LOSE_TEXTS[S.loseTextIdx??0];
-    scroll.appendChild(el('div',{class:'eyebrow'},'Провал'));
+    const t=LOSE_TEXTS()[S.loseTextIdx??0];
+    scroll.appendChild(el('div',{class:'eyebrow'},ui.lostEyebrow));
     scroll.appendChild(el('h1',{class:'h-title'},t.title));
     scroll.appendChild(el('p',{class:'p-body'},t.body.replace('{zone}',currentZone().name)));
   }
   p.appendChild(scroll);
-  p.appendChild(el('div',{class:'screen-footer'},[el('button',{class:'cta-btn',onclick:resetGame},'Начать новый переход')]));
+  p.appendChild(el('div',{class:'screen-footer'},[el('button',{class:'cta-btn',onclick:resetGame},ui.newRunBtn)]));
   return p;
 }
 
 function rulesSheet(){
+  const ui=T().ui;
   const backdrop=el('div',{class:'sheet-backdrop',onclick:(e)=>{ if(e.target===backdrop) closeRules(); }});
   const sheet=el('div',{class:'action-sheet',style:'max-height:78vh;overflow-y:auto;text-align:left;'});
-  sheet.appendChild(el('div',{class:'sheet-handle'}));
   sheet.appendChild(el('div',{class:'sheet-title-row'},[
-    el('div',{class:'sheet-title',style:'text-align:left;font-size:17px;'},'Правила пути'),
-    el('button',{class:'sheet-close-btn',onclick:closeRules,'aria-label':'Закрыть'},[svgIcon('close')]),
+    el('div',{class:'sheet-title',style:'text-align:left;font-size:17px;'},ui.rulesTitle),
+    el('button',{class:'sheet-close-btn',onclick:closeRules,'aria-label':ui.closeAria},[svgIcon('close')]),
   ]));
-  RULES.forEach(sec=>{
+  RULES().forEach(sec=>{
     const s=el('div',{class:'rules-section'});
-    s.appendChild(el('h3',{},sec.title));
+    if(sec.title) s.appendChild(el('h3',{},sec.title));
     if(sec.body) sec.body.split('\n').forEach(t=>s.appendChild(el('p',{},t)));
     if(sec.list){ const ul=el('ul',{}); sec.list.forEach(li=>ul.appendChild(el('li',{},li))); s.appendChild(ul); }
     if(sec.note) s.appendChild(el('p',{style:'font-style:italic;color:var(--ink-faint);'},sec.note));
     sheet.appendChild(s);
   });
-  sheet.appendChild(el('button',{class:'sheet-btn primary',style:'margin-top:8px;',onclick:closeRules},'Понятно'));
+  sheet.appendChild(el('button',{class:'sheet-btn primary',style:'margin-top:8px;',onclick:closeRules},ui.understoodBtn));
   backdrop.appendChild(sheet);
   return backdrop;
 }
@@ -996,11 +1364,16 @@ function rulesSheet(){
 function render(){
   const app=document.getElementById('phone');
   app.innerHTML='';
+  app.appendChild(getStarfield());
+  if(LANG){ document.title=T().appName; document.documentElement.lang=LANG; }
+
+  if(S.phase==='lang'){ app.appendChild(langScreen()); return; }
+
   app.appendChild(appBar());
 
-  if(S.phase==='intro'){ app.appendChild(introScreen()); if(S.rulesOpen) app.appendChild(rulesSheet()); return; }
-  if(S.phase==='setup'){ app.appendChild(setupScreen()); if(S.rulesOpen) app.appendChild(rulesSheet()); return; }
-  if(S.phase==='won'||S.phase==='lost'){ app.appendChild(endScreen()); if(S.rulesOpen) app.appendChild(rulesSheet()); return; }
+  if(S.phase==='intro'){ app.appendChild(introScreen()); if(S.rulesOpen) app.appendChild(rulesSheet()); if(S.langSwitchOpen) app.appendChild(langSwitchSheet()); return; }
+  if(S.phase==='setup'){ app.appendChild(setupScreen()); if(S.rulesOpen) app.appendChild(rulesSheet()); if(S.langSwitchOpen) app.appendChild(langSwitchSheet()); return; }
+  if(S.phase==='won'||S.phase==='lost'){ app.appendChild(endScreen()); if(S.rulesOpen) app.appendChild(rulesSheet()); if(S.langSwitchOpen) app.appendChild(langSwitchSheet()); return; }
 
   const content=el('div',{class:'content'});
   content.appendChild(S.tab==='path'?pathContent():sheetTabContent());
@@ -1008,6 +1381,7 @@ function render(){
   if(S.tab==='path'){ const az=actionZone(); if(az) app.appendChild(az); }
   app.appendChild(tabBar());
   if(S.rulesOpen) app.appendChild(rulesSheet());
+  if(S.langSwitchOpen) app.appendChild(langSwitchSheet());
 }
 render();
 </script>
