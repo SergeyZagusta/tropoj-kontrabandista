@@ -1,3 +1,4 @@
+/* ===== Manrope (body text) — one real typeface across all three languages ===== */
 @font-face {
   font-family: 'Manrope';
   font-style: normal;
@@ -34,25 +35,6 @@
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 @font-face {
-  font-family: 'Big Shoulders Display';
-  font-style: normal;
-  font-weight: 700;
-  src: url('./big-shoulders-display-latin-700-normal.woff2') format('woff2');
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-@font-face {
-  font-family: 'Big Shoulders Display';
-  font-style: normal;
-  font-weight: 800;
-  src: url('./big-shoulders-display-latin-800-normal.woff2') format('woff2');
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
-}
-
-/* Latin-Extended subset — covers Polish diacritics (ę, ą, ł, ń, ś, ź, ć) that the base
-   Latin subset above does not include. Same font family/weight, restricted unicode-range,
-   so the browser uses this only for the specific characters missing from the base face
-   instead of silently falling back to the system font. */
-@font-face {
   font-family: 'Manrope';
   font-style: normal;
   font-weight: 400;
@@ -88,27 +70,6 @@
   unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 @font-face {
-  font-family: 'Big Shoulders Display';
-  font-style: normal;
-  font-weight: 700;
-  src: url('./big-shoulders-display-latin-ext-700-normal.woff2') format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
-}
-@font-face {
-  font-family: 'Big Shoulders Display';
-  font-style: normal;
-  font-weight: 800;
-  src: url('./big-shoulders-display-latin-ext-800-normal.woff2') format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
-}
-
-/* Cyrillic subset — Belarusian and Russian text. Manrope has no native Cyrillic glyphs
-   bundled in the Latin-only subset above, and Big Shoulders Display has NO Cyrillic at
-   all in any subset, so Cyrillic headings were always silently falling back to the
-   device's system font. Oswald is used here (aliased under the 'Big Shoulders Display'
-   family name) as the closest-matching bold condensed font that does support Cyrillic,
-   so headings look the same custom style across all three languages. */
-@font-face {
   font-family: 'Manrope';
   font-style: normal;
   font-weight: 400;
@@ -142,6 +103,40 @@
   font-weight: 800;
   src: url('./manrope-cyrillic-800-normal.woff2') format('woff2');
   unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+/* ===== Headings — ONE typeface (Oswald) covering Latin, Polish diacritics, and Cyrillic
+   in a single consistent design. Declared under the 'Big Shoulders Display' family name
+   so the rest of the game's CSS doesn't need to change. Oswald tops out at weight 700,
+   so the 800 declaration below reuses the same 700 file (browsers just need a face
+   registered at that weight to stop hunting for a system fallback). ===== */
+@font-face {
+  font-family: 'Big Shoulders Display';
+  font-style: normal;
+  font-weight: 700;
+  src: url('./oswald-latin-700-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'Big Shoulders Display';
+  font-style: normal;
+  font-weight: 800;
+  src: url('./oswald-latin-700-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: 'Big Shoulders Display';
+  font-style: normal;
+  font-weight: 700;
+  src: url('./oswald-latin-ext-700-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Big Shoulders Display';
+  font-style: normal;
+  font-weight: 800;
+  src: url('./oswald-latin-ext-700-normal.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 @font-face {
   font-family: 'Big Shoulders Display';
